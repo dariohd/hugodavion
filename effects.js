@@ -12,6 +12,7 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 const isFinePointer = window.matchMedia('(pointer: fine)').matches;
 
 let scrollTriggers = [];
+let projectScrollTriggers = [];
 
 export function splitTextToChars(selector, accessibleLabel = '') {
   const el = document.querySelector(selector);
@@ -41,11 +42,25 @@ function clearScrollTriggers() {
   scrollTriggers = [];
 }
 
+function clearProjectScrollTriggers() {
+  projectScrollTriggers.forEach((t) => t.kill());
+  projectScrollTriggers = [];
+}
+
 export function refreshScrollAnimations() {
   clearScrollTriggers();
   if (prefersReduced) return;
   setupScrollAnimations();
+  setupProjectCardScrollAnimations();
   ScrollTrigger.refresh();
+}
+
+export function refreshProjectCards(grid) {
+  clearProjectScrollTriggers();
+  reinitSpotlight();
+  reinitCardTilt();
+  if (prefersReduced || !grid) return;
+  animateProjectFilter(grid);
 }
 
 function runIntro(onDone) {
@@ -136,19 +151,6 @@ function setupScrollAnimations() {
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
 
-  gsap.utils.toArray('.project-card').forEach((card, i) => {
-    const tween = gsap.from(card, {
-      scrollTrigger: { trigger: card, start: 'top 90%' },
-      y: 48,
-      opacity: 0,
-      scale: 0.94,
-      duration: 1.05,
-      delay: (i % 3) * 0.08,
-      ease: SMOOTH,
-    });
-    if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
-  });
-
   gsap.utils.toArray('.tech-group').forEach((group) => {
     const pills = group.querySelectorAll('.tech-pill');
     const tween = gsap.from(pills, {
@@ -197,6 +199,27 @@ function setupScrollAnimations() {
       ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
+  });
+}
+
+function setupProjectCardScrollAnimations(root = document) {
+  if (prefersReduced) return;
+
+  const cards = root.querySelectorAll
+    ? root.querySelectorAll('.project-card')
+    : document.querySelectorAll('.project-card');
+
+  cards.forEach((card, i) => {
+    const tween = gsap.from(card, {
+      scrollTrigger: { trigger: card, start: 'top 90%' },
+      y: 48,
+      opacity: 0,
+      scale: 0.94,
+      duration: 1.05,
+      delay: (i % 3) * 0.08,
+      ease: SMOOTH,
+    });
+    if (tween.scrollTrigger) projectScrollTriggers.push(tween.scrollTrigger);
   });
 }
 
@@ -413,6 +436,7 @@ export function initEffects() {
     initTechBg();
     gsap.set('.tech-bg', { opacity: 1 });
     setupScrollAnimations();
+    setupProjectCardScrollAnimations();
     initSectionParallax();
     initCardTilt();
     initBoingHover();
@@ -427,6 +451,7 @@ export function initEffects() {
     initTechBg();
     animateHero(skipped);
     setupScrollAnimations();
+    setupProjectCardScrollAnimations();
     initSectionParallax();
     initCardTilt();
     initBoingHover();

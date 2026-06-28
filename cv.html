@@ -31,6 +31,30 @@
       padding: 2.5rem 2.75rem;
       box-shadow: 0 12px 40px rgba(100, 140, 210, 0.12);
     }
+    .cv__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .cv__btn {
+      display: inline-block;
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+    .cv__btn--primary { background: var(--accent); color: #fff; }
+    .cv__btn--outline {
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
     .cv__head {
       display: flex;
       justify-content: space-between;
@@ -42,7 +66,7 @@
     }
     h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
     .cv__role { color: var(--accent); font-weight: 700; font-size: 1.1rem; margin-top: 0.25rem; }
-    .cv__tagline { color: var(--muted); margin-top: 0.35rem; }
+    .cv__details { color: var(--muted); font-size: 0.9rem; margin-top: 0.35rem; }
     .cv__contact {
       font-size: 0.92rem;
       text-align: right;
@@ -60,26 +84,24 @@
     p, li { font-size: 0.95rem; color: var(--muted); }
     ul { padding-left: 1.2rem; }
     li { margin-bottom: 0.35rem; }
+    .cv__entry { margin-bottom: 1.1rem; }
+    .cv__entry-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.2rem;
+    }
+    .cv__entry-head strong { color: var(--text); }
+    .cv__entry-head span { font-size: 0.85rem; }
+    .cv__entry-role { font-weight: 600; color: var(--text); font-size: 0.92rem; margin-bottom: 0.35rem; }
     .cv__project { margin-bottom: 1rem; }
     .cv__project strong { color: var(--text); display: block; margin-bottom: 0.15rem; }
     .cv__project span { font-size: 0.88rem; }
-    .cv__print {
-      display: block;
-      width: fit-content;
-      margin: 2rem auto 0;
-      padding: 0.65rem 1.25rem;
-      border-radius: 999px;
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-    }
     @media print {
       body { background: #fff; padding: 0; }
       .cv { box-shadow: none; border: none; border-radius: 0; max-width: none; }
-      .cv__print, .cv__back { display: none !important; }
+      .cv__actions, .cv__back { display: none !important; }
     }
     .cv__back {
       display: block;
@@ -92,55 +114,118 @@
 </head>
 <body>
   <article class="cv" id="cv-root"></article>
-  <button type="button" class="cv__print" onclick="window.print()">Enregistrer en PDF</button>
   <a class="cv__back" href="./">← Retour au portfolio</a>
   <script type="module">
-    import { profile, about, projects, stackGroups, site, metaProjectIds } from './config.js';
+    import {
+      profile,
+      about,
+      projects,
+      experience,
+      education,
+      softSkills,
+      languages,
+      stackGroups,
+      site,
+      metaProjectIds,
+    } from './config.js';
 
     const live = projects.filter((p) => p.url && !p.local && !metaProjectIds.has(p.id));
     const featured = projects.filter((p) => p.featured);
+    const skills = [...new Set(stackGroups.flatMap((g) => g.items))];
 
-    const skills = stackGroups.flatMap((g) => g.items);
-    const uniqueSkills = [...new Set(skills)];
+    const pdfHref = profile.cv || '';
+    const actions = pdfHref
+      ? `<div class="cv__actions">
+          <a class="cv__btn cv__btn--primary" href="${pdfHref}" download>Télécharger le PDF</a>
+          <button type="button" class="cv__btn cv__btn--outline" onclick="window.print()">Imprimer cette page</button>
+        </div>`
+      : `<div class="cv__actions">
+          <button type="button" class="cv__btn cv__btn--primary" onclick="window.print()">Enregistrer en PDF</button>
+        </div>`;
 
     document.getElementById('cv-root').innerHTML = `
+      ${actions}
       <header class="cv__head">
         <div>
           <h1>${profile.name}</h1>
           <p class="cv__role">${profile.role}</p>
-          <p class="cv__tagline">${profile.tagline}</p>
+          ${profile.details ? `<p class="cv__details">${profile.location} · ${profile.details}</p>` : ''}
         </div>
         <div class="cv__contact">
-          <div>${profile.location}</div>
           <div><a href="mailto:${profile.email}">${profile.email}</a></div>
           <div>${profile.phone}</div>
+          ${profile.linkedin ? `<div><a href="${profile.linkedin}">LinkedIn</a></div>` : ''}
           <div><a href="${profile.github}">github.com/${profile.githubUser}</a></div>
-          ${site.canonicalUrl ? `<div><a href="${site.canonicalUrl}">${site.canonicalUrl.replace(/^https?:\/\//, '')}</a></div>` : ''}
+          ${site.canonicalUrl ? `<div><a href="${site.canonicalUrl}">Portfolio</a></div>` : ''}
         </div>
       </header>
 
       <section>
         <h2>Profil</h2>
-        ${about.goal ? `<p><strong style="color:var(--text)">${about.goal}</strong></p>` : ''}
-        ${about.paragraphs.map((p) => `<p style="margin-top:0.65rem">${p}</p>`).join('')}
+        <p>${profile.bio}</p>
       </section>
 
       <section>
-        <h2>Compétences</h2>
-        <ul>${uniqueSkills.map((s) => `<li>${s}</li>`).join('')}</ul>
+        <h2>Compétences techniques</h2>
+        <ul>${skills.map((s) => `<li>${s}</li>`).join('')}</ul>
       </section>
 
       <section>
-        <h2>Projets sélectionnés</h2>
-        ${featured.map((p) => `
+        <h2>Soft skills</h2>
+        <ul>${softSkills.map((s) => `<li>${s}</li>`).join('')}</ul>
+      </section>
+
+      <section>
+        <h2>Langues</h2>
+        <ul>${languages.map((l) => `<li><strong>${l.name}</strong> — ${l.level}</li>`).join('')}</ul>
+      </section>
+
+      <section>
+        <h2>Expériences professionnelles</h2>
+        ${experience
+          .map(
+            (job) => `
+          <div class="cv__entry">
+            <div class="cv__entry-head">
+              <strong>${job.company}</strong>
+              <span>${job.period}</span>
+            </div>
+            <p class="cv__entry-role">${job.role}</p>
+            <ul>${job.highlights.map((h) => `<li>${h}</li>`).join('')}</ul>
+          </div>`,
+          )
+          .join('')}
+      </section>
+
+      <section>
+        <h2>Formation</h2>
+        ${education
+          .map(
+            (edu) => `
+          <div class="cv__entry">
+            <div class="cv__entry-head">
+              <strong>${edu.title}</strong>
+              <span>${edu.period}</span>
+            </div>
+            <p class="cv__entry-role">${edu.school} — ${edu.subtitle}</p>
+            <ul>${edu.highlights.map((h) => `<li>${h}</li>`).join('')}</ul>
+          </div>`,
+          )
+          .join('')}
+      </section>
+
+      <section>
+        <h2>Projets mis en avant</h2>
+        ${featured
+          .map(
+            (p) => `
           <div class="cv__project">
             <strong>${p.name}</strong>
             <span>${p.description}</span>
-            ${p.role ? `<br><span><em>Rôle :</em> ${p.role}</span>` : ''}
-            ${p.outcome ? `<br><span><em>Résultat :</em> ${p.outcome}</span>` : ''}
             ${p.url && !p.local ? `<br><span>${p.url}</span>` : ''}
-          </div>
-        `).join('')}
+          </div>`,
+          )
+          .join('')}
       </section>
 
       <section>

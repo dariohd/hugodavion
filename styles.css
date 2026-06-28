@@ -951,7 +951,111 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   border-radius: 0 var(--radius) var(--radius) 0;
 }
 
+.about__details {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem !important;
+}
+
 .about__text strong { color: var(--text); font-weight: 600; }
+
+/* Parcours */
+.parcours {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.parcours__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.parcours__title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.parcours__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.parcours__item {
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft);
+}
+
+.parcours__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+
+.parcours__meta strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.parcours__meta span {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.parcours__role {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.parcours__item ul {
+  padding-left: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.parcours__item li { margin-bottom: 0.25rem; }
+
+.parcours__extras {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.parcours__chips {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.parcours__langs {
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.parcours__langs strong { color: var(--text); }
 
 /* Expertise */
 .expertise-grid {
@@ -1697,6 +1801,11 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   .about-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .parcours__grid,
+  .parcours__extras {
+    grid-template-columns: 1fr;
   }
 
   .about__portrait {

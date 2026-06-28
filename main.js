@@ -10,6 +10,10 @@ import {
   projects,
   stackGroups,
   about,
+  experience,
+  education,
+  softSkills,
+  languages,
   otherPortfolios,
   hubLinks,
 } from './config.js';
@@ -144,6 +148,7 @@ function initProfile() {
       cv.href = profile.cv;
       cv.target = '_blank';
       cv.rel = 'noopener noreferrer';
+      if (profile.cv.endsWith('.pdf')) cv.setAttribute('download', '');
       cv.hidden = false;
     } else {
       cv.remove();
@@ -273,8 +278,54 @@ function initAbout() {
   if (!el) return;
   const parts = [];
   if (about.goal) parts.push(`<p class="about__goal">${parseBold(about.goal)}</p>`);
+  if (profile.details) parts.push(`<p class="about__details">${profile.details}</p>`);
   parts.push(...about.paragraphs.map((p) => `<p>${parseBold(p)}</p>`));
   el.innerHTML = parts.join('');
+}
+
+function initParcours() {
+  const el = document.getElementById('parcours');
+  if (!el) return;
+
+  const timeline = (title, items, renderItem) => `
+    <div class="parcours__col">
+      <h3 class="parcours__title">${title}</h3>
+      <ol class="parcours__list">
+        ${items.map(renderItem).join('')}
+      </ol>
+    </div>`;
+
+  el.innerHTML = `
+    <div class="parcours__grid">
+      ${timeline('Expériences', experience, (job) => `
+        <li class="parcours__item">
+          <div class="parcours__meta">
+            <strong>${job.company}</strong>
+            <span>${job.period}</span>
+          </div>
+          <p class="parcours__role">${job.role}</p>
+          <ul>${job.highlights.map((h) => `<li>${h}</li>`).join('')}</ul>
+        </li>`)}
+      ${timeline('Formation', education, (edu) => `
+        <li class="parcours__item">
+          <div class="parcours__meta">
+            <strong>${edu.title}</strong>
+            <span>${edu.period}</span>
+          </div>
+          <p class="parcours__role">${edu.school} — ${edu.subtitle}</p>
+          <ul>${edu.highlights.map((h) => `<li>${h}</li>`).join('')}</ul>
+        </li>`)}
+    </div>
+    <div class="parcours__extras">
+      <div class="parcours__extra">
+        <h3 class="parcours__title">Soft skills</h3>
+        <ul class="parcours__chips">${softSkills.map((s) => `<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="parcours__extra">
+        <h3 class="parcours__title">Langues</h3>
+        <ul class="parcours__langs">${languages.map((l) => `<li><strong>${l.name}</strong> — ${l.level}</li>`).join('')}</ul>
+      </div>
+    </div>`;
 }
 
 function initExpertise() {
@@ -388,11 +439,7 @@ function renderProjects() {
   const filtered =
     activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
   grid.innerHTML = filtered.map(projectCard).join('');
-  if (window.animateProjectFilter) window.animateProjectFilter(grid);
-  if (window.refreshScrollAnimations) window.refreshScrollAnimations();
-  if (window.__reinitTilt) window.__reinitTilt();
-  if (window.__reinitSpotlight) window.__reinitSpotlight();
-  if (window.__reinitBoing) window.__reinitBoing();
+  if (window.refreshProjectCards) window.refreshProjectCards(grid);
 }
 
 function initFilters() {
@@ -512,6 +559,7 @@ initNav();
 initHeroStats();
 initMarquee();
 initAbout();
+initParcours();
 initExpertise();
 initFilters();
 initStack();
@@ -523,8 +571,7 @@ async function bootEffects() {
   try {
     const fx = await import('./effects.js');
     fx.splitTextToChars('.hero__name', profile.name);
-    window.animateProjectFilter = fx.animateProjectFilter;
-    window.refreshScrollAnimations = fx.refreshScrollAnimations;
+    window.refreshProjectCards = fx.refreshProjectCards;
     fx.initEffects();
   } catch (err) {
     console.error('Effects failed:', err);

@@ -4,23 +4,24 @@ export const site = {
   /** URL absolue du site en production (pour OG / canonical). Laisser vide en local. */
   canonicalUrl: 'https://dariohd.github.io/hugodavion/',
   description:
-    'Portfolio technique de Hugo Davion : sites web, applications React/TypeScript, portfolios interactifs et jeux (Godot, UE5, Babylon.js).',
+    'Portfolio de Hugo Davion — développeur full-stack en alternance (CGI), sites web, PWA métier et game dev.',
   ogImage: 'assets/og-cover.jpg',
 };
 
 export const profile = {
   name: 'Hugo Davion',
-  role: 'Développeur web & full-stack',
-  tagline: 'Développeur web, full-stack et game dev',
-  bio: 'Je conçois des sites vitrines, des applications métier (React, TypeScript, PostgreSQL) et des expériences interactives. Ouvert aux opportunités en développement web et full-stack.',
+  role: 'Développeur full-stack',
+  tagline: 'Web, applications métier & game dev',
+  bio: 'Développeur full stack et technicien réseaux. En alternance chez CGI (front-end TypeScript, back-end Java Spring, PostgreSQL) et en cycle ingénieur RIOC à UniLaSalle Amiens. Je conçois aussi des sites vitrines, PWA métier et expériences interactives en indépendant.',
+  details: '22 ans · Permis B',
   email: 'davionhugo@gmail.com',
   phone: '06 13 80 95 65',
   phoneTel: '+33613809565',
   github: 'https://github.com/dariohd',
   githubUser: 'dariohd',
   linkedin: 'https://www.linkedin.com/in/hugodavion/',
-  /** Chemin vers un CV PDF (ex. assets/cv-hugo.pdf). Masqué si vide. */
-  cv: 'cv.html',
+  cv: 'assets/cv-hugo.pdf',
+  cvPreview: 'cv.html',
   photo: 'assets/hugo-portrait.png',
   available: 'Disponible',
   location: 'France',
@@ -42,10 +43,10 @@ export const nav = [
 ];
 
 export const heroManifest = [
-  { key: 'focus', value: 'développement web' },
-  { key: 'aussi', value: 'UE5 · Godot · Babylon.js' },
-  { key: 'stack', value: 'React · TypeScript · PostgreSQL' },
-  { key: 'dispo', value: 'disponible' },
+  { key: 'poste', value: 'alternance CGI' },
+  { key: 'formation', value: 'ingénieur RIOC · UniLaSalle' },
+  { key: 'stack', value: 'TypeScript · Java · PostgreSQL' },
+  { key: 'aussi', value: 'React · PWA · Vercel' },
   { key: 'cible', value: 'web · full-stack' },
 ];
 
@@ -92,13 +93,15 @@ export const expertise = [
     id: 'fullstack',
     title: 'Full-stack & données',
     description:
-      'Applications métier de bout en bout : API Express, PostgreSQL, Supabase, tableaux de bord animés et exports PDF.',
+      'Applications métier : API Express ou Java Spring, PostgreSQL, tableaux de bord animés, PWA et exports PDF.',
     skills: [
       'Java',
+      'Spring',
       'C#',
       'Express',
       'PostgreSQL',
       'Supabase',
+      'Neon',
       'API REST',
       'Tailwind CSS',
       'Framer Motion',
@@ -106,6 +109,13 @@ export const expertise = [
       'Zustand',
       'Modélisation BDD',
     ],
+  },
+  {
+    id: 'infra',
+    title: 'Réseaux & systèmes',
+    description:
+      'Administration et support : TCP/IP, VLAN, Active Directory, parc postes, Linux et Windows Server.',
+    skills: ['TCP/IP', 'VLAN', 'Active Directory', 'Linux', 'Windows Server', 'GLPI', 'ServiceNow'],
   },
   {
     id: 'branding',
@@ -118,7 +128,7 @@ export const expertise = [
     id: 'games',
     title: 'Jeux & game dev',
     description:
-      'Prototypes et jeux : coop horreur UE5 (CarryTheCurse), brawler navigateur (Pokémon Rumble Web) et portfolio interactif dariohd.',
+      'Prototypes et jeux : coop horreur UE5 (CarryTheCurse), jeux navigateur (PokeRift, Pokémon Rumble), Pokédex et portfolio interactif dariohd.',
     skills: [
       'Unreal Engine 5',
       'C++',
@@ -139,6 +149,7 @@ export const expertise = [
 export const projectCategories = [
   { id: 'all', label: 'Tous' },
   { id: 'sites', label: 'Sites' },
+  { id: 'outils', label: 'Outils' },
   { id: 'portfolio', label: 'Portfolio' },
   { id: 'entreprise', label: 'Entreprise' },
   { id: 'jeux', label: 'Jeux' },
@@ -157,7 +168,7 @@ export const projects = [
     image: 'https://www.etcbc-charpente.fr/images/gallery/realisation-18.webp',
     imageLocal: 'assets/projects/etcbc.jpg',
     stack: ['Site vitrine', 'Galerie', 'SEO local', 'HTML', 'CSS', 'JavaScript'],
-    url: 'https://www.etcbc-charpente.com/',
+    url: 'https://www.etcbc-charpente.fr/',
     repo: 'https://github.com/dariohd/ETCBC',
   },
   {
@@ -172,6 +183,7 @@ export const projects = [
     imageLocal: 'assets/projects/maison-ela.jpg',
     stack: ['HTML / CSS', 'Formulaires', 'Galerie', 'Multilingue', 'SEO'],
     url: 'https://www.lamaisondela.com/',
+    repo: 'https://github.com/dariohd/LaMaisonDEla',
   },
   {
     id: 'quai-des-reves',
@@ -185,6 +197,7 @@ export const projects = [
     imageLocal: 'assets/projects/quai.jpg',
     stack: ['Landing', 'Storytelling', 'OpenStreetMap', 'HTML / CSS'],
     url: 'https://quai-des-reves.vercel.app/',
+    repo: 'https://github.com/dariohd/QuaiDesReves',
   },
   {
     id: 'domaine-rochebonne',
@@ -200,34 +213,7 @@ export const projects = [
     imagePosition: 'center 30%',
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n', 'SEO'],
     url: 'https://ledomainederochebonne.com/',
-  },
-  {
-    id: 'rlreplay',
-    category: 'sites',
-    name: 'RL Replay',
-    description:
-      'Outil coach 100 % client : analyse de replays Rocket League (WASM), minimap, graphiques boost/possession, comparaison multi-replays.',
-    role: 'Développement front et parsing WASM',
-    outcome: 'Outil public en ligne, analyse locale sans serveur',
-    imageLocal: 'assets/projects/rlreplay.jpg',
-    imagePosition: 'top center',
-    stack: ['Vite', 'JavaScript', 'WASM', 'Canvas 2D'],
-    url: 'https://rl-replay.vercel.app/',
-    repo: 'https://github.com/dariohd/RLReplay',
-  },
-  {
-    id: 'sqcdp',
-    category: 'sites',
-    featured: true,
-    name: 'SQCDP',
-    description:
-      'PWA React/TypeScript pour le pilotage industriel : tableaux animés, mode Daily, PDCA, roulette de réunion et synchronisation hors-ligne via API.',
-    role: 'Full-stack : React, API Express, PostgreSQL',
-    outcome: 'PWA en production sur Vercel, mode hors-ligne atelier',
-    imageLocal: 'assets/projects/sqcdp.jpg',
-    stack: ['React', 'TypeScript', 'PWA', 'Tailwind CSS', 'Express', 'PostgreSQL', 'Framer Motion'],
-    url: 'https://sqcdp.vercel.app/',
-    repo: 'https://github.com/dariohd/SQCDP',
+    repo: 'https://github.com/dariohd/DomaineDeRochebonne',
   },
   {
     id: 'forum-libre',
@@ -242,6 +228,35 @@ export const projects = [
     url: '../../Sites/Forum/',
     local: true,
     demoNote: 'Démo locale · déploiement à venir',
+  },
+  /* ——— Outils ——— */
+  {
+    id: 'rlreplay',
+    category: 'outils',
+    name: 'RL Replay',
+    description:
+      'Outil coach 100 % client : analyse de replays Rocket League (WASM), minimap, graphiques boost/possession, comparaison multi-replays.',
+    role: 'Développement front et parsing WASM',
+    outcome: 'Outil public en ligne, analyse locale sans serveur',
+    imageLocal: 'assets/projects/rlreplay.jpg',
+    imagePosition: 'top center',
+    stack: ['Vite', 'JavaScript', 'WASM', 'Canvas 2D'],
+    url: 'https://rl-replay.vercel.app/',
+    repo: 'https://github.com/dariohd/RLReplay',
+  },
+  {
+    id: 'sqcdp',
+    category: 'outils',
+    featured: true,
+    name: 'SQCDP',
+    description:
+      'PWA React/TypeScript pour le pilotage industriel : tableaux animés, mode Daily, PDCA, roulette de réunion et synchronisation hors-ligne via API.',
+    role: 'Full-stack : React, API Express, PostgreSQL',
+    outcome: 'PWA en production sur Vercel, mode hors-ligne atelier',
+    imageLocal: 'assets/projects/sqcdp.jpg',
+    stack: ['React', 'TypeScript', 'PWA', 'Tailwind CSS', 'Express', 'PostgreSQL', 'Supabase', 'Playwright', 'Framer Motion'],
+    url: 'https://sqcdp.vercel.app/',
+    repo: 'https://github.com/dariohd/SQCDP',
   },
   /* ——— Portfolio ——— */
   {
@@ -266,6 +281,7 @@ export const projects = [
     imageLocal: 'assets/projects/portfolio-site.svg',
     stack: ['HTML', 'CSS', 'JS modules', 'GSAP', 'SEO'],
     url: './',
+    repo: 'https://github.com/dariohd/hugodavion',
     local: true,
   },
   /* ——— Entreprise ——— */
@@ -295,6 +311,7 @@ export const projects = [
     imageLocal: 'assets/projects/bulle.jpg',
     stack: ['Next.js', 'React', 'AI SDK', 'Tailwind CSS', 'Widget', 'Vercel'],
     url: 'https://bulle-chatbot.vercel.app/',
+    repo: 'https://github.com/dariohd/BulleChatBot',
   },
   /* ——— Jeux ——— */
   {
@@ -310,18 +327,56 @@ export const projects = [
     demoNote: 'Prototype UE5 · éditeur requis',
   },
   {
-    id: 'pokemon-rumble-web',
+    id: 'pokerift',
     category: 'jeux',
     featured: true,
-    name: 'Pokémon Rumble Web',
+    name: 'PokeRift',
     description:
-      'Jeu navigateur style Pokémon Rumble : Toy Field, figurines, stages, recrutement et combat auto en WebGL (Babylon.js).',
-    role: 'Game dev web · Babylon.js et gameplay',
+      'Action RPG navigateur style Rumble World : hub dimensionnel, donjons, vagues, combos et collection en Babylon.js 3D.',
+    role: 'Game dev web · Babylon.js',
     outcome: 'Jeu jouable en ligne sur Vercel',
     imageLocal: 'assets/projects/pokerift.jpg',
     stack: ['Babylon.js', 'WebGL', 'Vite', 'JavaScript', 'Action RPG'],
     url: 'https://poke-rift.vercel.app/',
+    repo: 'https://github.com/dariohd/PokeRift',
+  },
+  {
+    id: 'pokemon-rumble-web',
+    category: 'jeux',
+    name: 'Pokémon Rumble',
+    description:
+      'Jeu navigateur top-down Canvas 2D : figurines, arène, vagues, recrutement et améliorations permanentes.',
+    imageLocal: 'assets/projects/pokemon-rumble.svg',
+    stack: ['Vite', 'Canvas 2D', 'JavaScript'],
+    url: 'https://pokemonrumbleweb.vercel.app/',
     repo: 'https://github.com/dariohd/PokemonRumbleWeb',
+  },
+  {
+    id: 'pokedex',
+    category: 'jeux',
+    name: 'Pokédex',
+    description:
+      'Explorateur du Pokédex national via PokéAPI : recherche, favoris, comparaison BST, formes alternatives et évolutions.',
+    role: 'Desktop WPF (.NET 10) et version web React',
+    outcome: 'Double interface MVVM + React 19',
+    imageLocal: 'assets/projects/pokedex.svg',
+    stack: ['.NET 10', 'WPF', 'MVVM', 'React 19', 'Vite', 'Tailwind CSS', 'TypeScript'],
+    url: '../../Jeux/Pokedex/',
+    repo: 'https://github.com/dariohd/Pokedex',
+    local: true,
+    demoNote: 'Démo locale · WPF ou web',
+  },
+  {
+    id: 'pokemon-hoopa',
+    category: 'jeux',
+    name: 'PokemonHoopa',
+    description:
+      'Fan game Godot 4 : aventure narrative, hub dimensionnel et exploration 2D/3D (Kalos, Unys).',
+    imageLocal: 'assets/projects/pokemon-hoopa.svg',
+    stack: ['Godot 4', 'GDScript', '2D / 3D', 'Spritesheets'],
+    url: '../../Jeux/PokemonHoopa/',
+    local: true,
+    demoNote: 'Fan game · Godot 4.7+',
   },
 ];
 
@@ -339,14 +394,19 @@ export const stackGroups = [
   {
     title: 'Back-end & données',
     icon: '◇',
-    items: ['Java', 'C#', 'Express', 'PostgreSQL', 'Supabase', 'API REST', 'Framer Motion', 'Recharts', 'Zustand'],
+    items: ['Java', 'Spring', 'C#', 'Express', 'PostgreSQL', 'Supabase', 'Neon', 'API REST', 'Framer Motion', 'Recharts', 'Zustand'],
+  },
+  {
+    title: 'Réseaux & systèmes',
+    icon: '◇',
+    items: ['TCP/IP', 'VLAN', 'Active Directory', 'Linux', 'Windows Server', 'GLPI', 'ServiceNow'],
   },
   {
     title: 'Jeux & game dev',
     icon: '◇',
     items: [
       'Unreal Engine 5', 'C++', 'Blueprints', 'Godot 4', 'GDScript',
-      'Babylon.js', 'WebGL', 'Action RPG', '2D / 3D', 'Spritesheets',
+      'Babylon.js', 'WebGL', 'Canvas 2D', '.NET', 'WPF', 'Action RPG', '2D / 3D',
     ],
   },
   {
@@ -357,14 +417,88 @@ export const stackGroups = [
 ];
 
 export const about = {
-  title: 'Profil technique',
-  goal: 'Ouvert aux opportunités en développement web et full-stack (CDI, alternance, freelance).',
+  title: 'Profil',
+  goal: 'En alternance chez CGI et en cycle ingénieur RIOC à UniLaSalle — rigoureux, autonome et à l’aise en environnement technique varié.',
   paragraphs: [
-    'Développeur web et full-stack : sites vitrines (HTML/CSS, SEO), applications React/TypeScript (SQCDP, RL Replay), API Express et PostgreSQL, déploiement Vercel.',
-    'Je réalise aussi des portfolios interactifs (Canvas 2D, GSAP) et des outils de communication (thèmes CSS, export vidéo Playwright/ffmpeg).',
-    'En game dev : prototype coop UE5 (CarryTheCurse), jeu navigateur Babylon.js (Pokémon Rumble Web), portfolio interactif dariohd.',
+    'Développeur full stack et technicien réseaux : front-end TypeScript, back-end Java Spring ou Express, PostgreSQL, et déploiement Vercel pour mes projets personnels et clients.',
+    'En parallèle, je réalise des sites, PWA métier, widgets IA et petits jeux (dariohd).',
+    'Expériences en alternance et stage : CGI, Airbus Atlantic (support N2, parc 250+ postes) et Numih (SQL, Active Directory, 150+ machines).',
   ],
 };
+
+export const experience = [
+  {
+    company: 'CGI',
+    period: '2025 — 2026',
+    role: 'Alternance — Dev full stack',
+    highlights: [
+      'Front-end TypeScript : interfaces, composants et intégration API',
+      'Back-end Java Spring : services, logique métier et API REST',
+      'PostgreSQL : modélisation, requêtes et évolutions de schéma',
+    ],
+  },
+  {
+    company: 'Airbus Atlantic — Méaulte',
+    period: '2024 — 2025',
+    role: 'Alternance',
+    highlights: [
+      'Scripts internes pour automatisation et réduction du temps de traitement des tickets',
+      'Collaboration en anglais (Inde), support technique N2, parc de 250+ postes',
+    ],
+  },
+  {
+    company: 'Numih — Amiens',
+    period: '2023 — 2024',
+    role: 'Stages',
+    highlights: [
+      'Requêtes SQL, automatisation de processus, documentation technique',
+      'Support utilisateur, maintenance de 150+ machines, Active Directory',
+    ],
+  },
+];
+
+export const education = [
+  {
+    school: 'UniLaSalle Amiens',
+    period: '2025 — 2026',
+    title: 'Cycle ingénieur RIOC',
+    subtitle: 'Réseaux, Informatique et Objets Connectés · alternance',
+    highlights: [
+      'Architecture logicielle, réseaux et systèmes, développement full stack, cybersécurité, objets connectés',
+    ],
+  },
+  {
+    school: 'IUT d’Amiens',
+    period: '2024 — 2025',
+    title: 'Licence professionnelle RGI',
+    subtitle: 'Réseaux et Génie Informatique',
+    highlights: [
+      'Administration réseaux (TCP/IP, VLAN), Windows Server, scripting, C#, React, intégration d’API',
+    ],
+  },
+  {
+    school: 'Lycée Saint-Rémi',
+    period: '2022 — 2024',
+    title: 'BTS SIO option SLAM',
+    subtitle: 'Solutions Logicielles et Applications Métiers',
+    highlights: [
+      'POO (C#, Java), développement web (PHP, JS), SQL/MySQL, UML, Linux/Windows, certification Cisco',
+    ],
+  },
+];
+
+export const softSkills = [
+  'Autonomie et proactivité sur des projets techniques complexes',
+  'Organisation, rigueur et documentation soignée',
+  'Résolution de problèmes en environnement contraint',
+  'Communication et vulgarisation technique',
+  'Adaptabilité et montée en compétences rapide',
+];
+
+export const languages = [
+  { name: 'Français', level: 'Langue maternelle' },
+  { name: 'Anglais', level: 'C1 professionnel' },
+];
 
 export const otherPortfolios = [
   { label: 'dariohd', href: hubLinks.portfolioDariohd, desc: 'Portfolio interactif' },

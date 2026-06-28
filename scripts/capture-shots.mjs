@@ -19,6 +19,7 @@ const captures = [
   { file: 'rlreplay.jpg', url: 'https://rl-replay.vercel.app/' },
   { file: 'sqcdp.jpg', url: 'https://sqcdp.vercel.app/' },
   { file: 'pokerift.jpg', url: 'https://poke-rift.vercel.app/' },
+  { file: 'pokemon-rumble.jpg', url: 'https://pokemonrumbleweb.vercel.app/' },
   { file: 'bulle.jpg', url: 'https://bulle-chatbot.vercel.app/' },
   { file: 'bullweb.jpg', url: 'https://bulletonsite.com/' },
   { file: 'portfolio-site.jpg', url: 'http://localhost:3456/', skipIntro: true, wait: 3500 },
@@ -38,6 +39,9 @@ const ogDownloads = [
 const localSvgs = [
   { file: 'forum.svg', title: 'Forum libre', subtitle: 'React · Neon · Vercel Blob', color: '#6b8cff' },
   { file: 'carry-the-curse.svg', title: 'CarryTheCurse', subtitle: 'Unreal Engine 5 · C++', color: '#8b5cf6' },
+  { file: 'pokemon-hoopa.svg', title: 'PokemonHoopa', subtitle: 'Godot 4 · GDScript', color: '#f472b6' },
+  { file: 'pokemon-rumble.svg', title: 'Pokémon Rumble', subtitle: 'Canvas 2D · Vite', color: '#60a5fa' },
+  { file: 'pokedex.svg', title: 'Pokédex', subtitle: '.NET WPF · React 19', color: '#f87171' },
   { file: 'portfolio-site.svg', title: 'hugodavion', subtitle: 'HTML · CSS · GSAP', color: '#7b9cff' },
   { file: 'portfolio-dariohd.svg', title: 'dariohd', subtitle: 'React · TypeScript · Canvas', color: '#a868e8' },
 ];
