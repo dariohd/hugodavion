@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio technique de Hugo Davion. Compétences, stack et projets web, full-stack et game dev." />
+  <meta name="theme-color" content="#dce8f8" />
+  <meta property="og:site_name" content="Hugo Davion" />
+  <title>Hugo Davion · Portfolio technique</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/hugo-portrait.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="intro" class="intro" aria-hidden="true">
+    <div class="intro__grid" aria-hidden="true"></div>
+    <div class="intro__inner">
+      <p class="intro__logo" data-site="brand"></p>
+      <p class="intro__tag">boot sequence // portfolio.sys</p>
+      <div class="intro__bar"><span class="intro__bar-fill"></span></div>
+      <span class="intro__counter">000</span>
+    </div>
+  </div>
+
+  <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+
+  <div id="cursor" class="cursor" aria-hidden="true">
+    <span class="cursor__blob"></span>
+  </div>
+
+  <div class="noise" aria-hidden="true"></div>
+  <div class="sky" aria-hidden="true">
+    <div class="cloud cloud--1"></div>
+    <div class="cloud cloud--2"></div>
+    <div class="cloud cloud--3"></div>
+    <div class="cloud cloud--4"></div>
+  </div>
+  <canvas id="bubbles" aria-hidden="true"></canvas>
+
+  <aside class="rail" id="rail">
+    <a class="rail__brand" href="#top" data-site="brand"></a>
+    <nav class="nav rail__nav" id="nav" aria-label="Navigation"></nav>
+    <a class="rail__cta" href="#contact">Contact</a>
+    <div class="rail__progress" aria-hidden="true"><span id="rail-progress"></span></div>
+  </aside>
+
+  <div class="page-wrap">
+    <header class="mob-header" id="header">
+      <a class="mob-header__brand" href="#top" data-site="brand"></a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+        <p class="hero__stamp">WEB · FULL-STACK · JEUX</p>
+        <div class="hero__content">
+          <p class="hero__eyebrow">
+            <span class="pulse-dot"></span>
+            <span data-profile="available"></span>
+          </p>
+          <h1 class="hero__name" data-profile="name"></h1>
+          <p class="hero__role" data-profile="role"></p>
+          <p class="hero__tagline" data-profile="tagline"></p>
+          <p class="hero__bio" data-profile="bio"></p>
+          <div class="hero__manifest" id="hero-manifest" aria-label="Résumé technique"></div>
+          <div class="hero__actions">
+            <a class="btn" href="#projets">Voir les projets</a>
+            <a class="btn btn--outline" id="github-hero" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn--outline" id="cv-link" href="#" hidden>Télécharger le CV</a>
+          </div>
+          <div class="hero__stats" id="hero-stats"></div>
+        </div>
+        </div>
+      </section>
+
+      <div class="skill-wall-wrap">
+        <div class="container">
+          <div class="skill-wall" id="marquee" aria-label="Technologies"></div>
+        </div>
+      </div>
+
+      <section class="section" id="about">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-watermark" aria-hidden="true">A</span>
+            <div>
+              <p class="eyebrow">À propos</p>
+              <h2 class="section__title" data-about="title"></h2>
+            </div>
+          </div>
+          <div class="about-grid">
+            <div class="about__portrait">
+              <img data-profile="photo" src="assets/hugo-portrait.png" alt="Hugo Davion" width="280" height="280" loading="eager" />
+            </div>
+            <div class="about__text" id="about-text"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="expertise">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-watermark" aria-hidden="true">E</span>
+            <div>
+              <p class="eyebrow">Expertise</p>
+              <h2 class="section__title">Compétences</h2>
+              <p class="section__lead">Domaines couverts et technologies associées.</p>
+            </div>
+          </div>
+          <div class="expertise-grid" id="expertise-grid"></div>
+        </div>
+      </section>
+
+      <section class="section" id="projets">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-watermark" aria-hidden="true">P</span>
+            <div>
+              <p class="eyebrow">Projets</p>
+              <h2 class="section__title">Projets</h2>
+              <p class="section__lead">Réalisations web, applications et jeux — filtrables par domaine.</p>
+            </div>
+          </div>
+          <div class="filters" id="project-filters" role="tablist"></div>
+          <div class="projects-grid" id="projects-grid"></div>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="stack">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-watermark" aria-hidden="true">S</span>
+            <div>
+              <p class="eyebrow">Stack</p>
+              <h2 class="section__title">Stack</h2>
+              <p class="section__lead">Langages, frameworks et outils utilisés.</p>
+            </div>
+          </div>
+          <div class="stack-groups" id="stack-groups"></div>
+        </div>
+      </section>
+
+      <section class="section" id="autres">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-watermark" aria-hidden="true">+</span>
+            <div>
+              <p class="eyebrow">Autres formats</p>
+              <h2 class="section__title">Autres portfolios</h2>
+              <p class="section__lead">Formats complémentaires (commercial, jeu, vidéo).</p>
+            </div>
+          </div>
+          <div class="links-row" id="other-portfolios"></div>
+        </div>
+      </section>
+
+      <section class="section section--cta" id="contact">
+        <div class="container">
+          <div class="cta">
+            <p class="eyebrow">Contact</p>
+            <h2 class="cta__title">Contact</h2>
+            <p class="cta__sub">Pour un échange ou une candidature : e-mail, téléphone ou GitHub.</p>
+            <div class="cta__links">
+              <a class="btn btn--lg" id="email-link" href="#">E-mail</a>
+              <a class="btn btn--outline btn--lg" id="phone-link" href="#"></a>
+              <a class="btn btn--outline btn--lg" id="github-cta" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a class="btn btn--outline btn--lg" id="linkedin-link" href="#" target="_blank" rel="noopener noreferrer" hidden>LinkedIn</a>
+            </div>
+            <p class="cta__loc" data-profile="location"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <span class="footer__brand" data-site="brand"></span>
+        <span>© <span id="year"></span> <span data-profile="name"></span></span>
+        <a href="../" id="hub-link">Hub portfolio</a>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
