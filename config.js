@@ -30,7 +30,6 @@ export const hubLinks = {
   root: '../../',
   bulleTonSite: '../../Entreprise/BulleTonSite/',
   portfolioDariohd: '../dariohd/',
-  bulleCom: '../../Entreprise/BulleTonSiteCommunication/',
 };
 
 export const nav = [
@@ -284,18 +283,6 @@ export const projects = [
     stack: ['HTML', 'CSS', 'JS modules', 'Thèmes CSS', 'Vercel'],
     url: 'https://bulletonsite.com',
     repo: 'https://github.com/dariohd/BulleTonSite',
-  },
-  {
-    id: 'bullweb-com',
-    category: 'entreprise',
-    name: 'Bulle ton site · Communication',
-    description:
-      'Diaporama vertical 9:16 pour Bulle ton site : slides animées, capture Playwright, export MP4 via ffmpeg.',
-    role: 'Automatisation vidéo · Playwright et ffmpeg',
-    outcome: 'Diapo intégrée sur bulletonsite.com/diapo',
-    imageLocal: 'assets/projects/bullweb-com.jpg',
-    stack: ['Design', 'Playwright', 'ffmpeg', 'JavaScript'],
-    url: 'https://bulletonsite.com/diapo/',
   },
   {
     id: 'bulle',

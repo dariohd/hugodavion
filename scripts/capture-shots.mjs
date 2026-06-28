@@ -21,7 +21,6 @@ const captures = [
   { file: 'pokerift.jpg', url: 'https://poke-rift.vercel.app/' },
   { file: 'bulle.jpg', url: 'https://bulle-chatbot.vercel.app/' },
   { file: 'bullweb.jpg', url: 'https://bulletonsite.com/' },
-  { file: 'bullweb-com.jpg', url: 'https://bulletonsite.com/diapo/' },
   { file: 'portfolio-site.jpg', url: 'http://localhost:3456/', skipIntro: true, wait: 3500 },
   { file: 'portfolio-dariohd.jpg', url: 'http://localhost:5174/', wait: 3500 },
 ];
