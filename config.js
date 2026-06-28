@@ -213,7 +213,7 @@ export const projects = [
     imagePosition: 'center 30%',
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n', 'SEO'],
     url: 'https://domainederoche.vercel.app/',
-    repo: 'https://github.com/dariohd/DomaineDeRochebonne',
+    repo: 'https://github.com/dariohd/DomaineDeRoche',
   },
   {
     id: 'forum-libre',
