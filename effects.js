@@ -1,11 +1,13 @@
 import gsap from './node_modules/gsap/index.js';
 import { ScrollTrigger } from './node_modules/gsap/ScrollTrigger.js';
+import { initTechBg } from './tech-bg.js';
+import { runIntroCinematic } from './intro-cinematic.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const BOING = 'elastic.out(1, 0.55)';
-const POP = 'back.out(2.8)';
-const INTRO_SEEN_KEY = 'portfolio-intro-seen';
+const POP = 'back.out(2)';
+const SMOOTH = 'power3.out';
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isFinePointer = window.matchMedia('(pointer: fine)').matches;
 
@@ -46,99 +48,61 @@ export function refreshScrollAnimations() {
   ScrollTrigger.refresh();
 }
 
-function shouldSkipIntro() {
-  try {
-    return sessionStorage.getItem(INTRO_SEEN_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function markIntroSeen() {
-  try {
-    sessionStorage.setItem(INTRO_SEEN_KEY, '1');
-  } catch {
-    /* ignore */
-  }
-}
-
-function finishIntro(intro, onDone) {
-  intro?.remove();
-  document.body.classList.remove('is-loading');
-  document.body.classList.add('is-ready');
-  markIntroSeen();
-  onDone?.();
-}
-
 function runIntro(onDone) {
-  const intro = document.getElementById('intro');
-  if (!intro || shouldSkipIntro()) {
-    finishIntro(intro, onDone);
-    return;
-  }
-
-  const counter = intro.querySelector('.intro__counter');
-  const bar = intro.querySelector('.intro__bar-fill');
-  const logo = intro.querySelector('.intro__logo');
-  const tag = intro.querySelector('.intro__tag');
-  const lines = intro.querySelectorAll('.intro__grid');
-
-  document.body.classList.add('is-loading');
-
-  const failSafe = setTimeout(() => {
-    finishIntro(intro, onDone);
-  }, 6000);
-
-  const counterObj = { val: 0 };
-  const tl = gsap.timeline({
-    onComplete: () => {
-      clearTimeout(failSafe);
-      finishIntro(intro, onDone);
+  runIntroCinematic({
+    gsap,
+    BOING,
+    onComplete: ({ skipped, intro }) => {
+      if (skipped) {
+        intro?.remove();
+        document.body.classList.remove('is-loading');
+        document.body.classList.add('is-ready');
+      }
+      onDone?.(skipped);
     },
   });
-
-  tl.set(intro, { display: 'flex' })
-    .from(lines, { opacity: 0, duration: 0.6, ease: 'power2.out' })
-    .from(logo, { scale: 0, opacity: 0, duration: 0.9, ease: BOING }, '-=0.3')
-    .from(tag, { y: 12, opacity: 0, duration: 0.4 }, '-=0.2')
-    .to(bar, { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, '-=0.1')
-    .to(
-      counterObj,
-      {
-        val: 100,
-        duration: 1.6,
-        ease: 'power2.inOut',
-        onUpdate: () => {
-          if (counter) counter.textContent = String(Math.round(counterObj.val)).padStart(3, '0');
-        },
-      },
-      '<',
-    )
-    .to(intro.querySelector('.intro__inner'), {
-      scale: 1.06,
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power2.in',
-    })
-    .to(intro, { opacity: 0, duration: 0.55, ease: 'power2.inOut' }, '-=0.1');
 }
 
-function animateHero() {
+function animateHero(skippedIntro = false) {
   const chars = document.querySelectorAll('.hero__name .char');
   const tl = gsap.timeline({ defaults: { ease: BOING } });
 
-  tl.from('.rail', { x: -40, opacity: 0, duration: 0.8, ease: POP })
-    .from(chars, { y: 50, opacity: 0, scale: 0.3, stagger: 0.05, duration: 0.9 }, '-=0.4')
-    .from('.cloud', { scale: 0, opacity: 0, stagger: 0.12, duration: 1, ease: BOING }, '-=0.7')
-    .from('.hero__stamp', { y: 20, opacity: 0, scale: 0.8, duration: 0.7 }, '-=0.5')
-    .from('.hero__role', { y: 24, opacity: 0, scale: 0.85, duration: 0.7 }, '-=0.5')
-    .from('.hero__tagline', { y: 20, opacity: 0, duration: 0.6, ease: POP }, '-=0.45')
-    .from('.hero__eyebrow', { scale: 0, opacity: 0, duration: 0.6 }, '-=0.5')
-    .from('.hero__bio', { y: 16, opacity: 0, duration: 0.65, ease: POP }, '-=0.35')
-    .from('.manifest__line', { x: -16, opacity: 0, scale: 0.9, stagger: 0.1, duration: 0.55 }, '-=0.4')
-    .from('.hero__actions .btn', { scale: 0, opacity: 0, stagger: 0.1, duration: 0.75 }, '-=0.35')
-    .from('.hero__stat', { scale: 0, opacity: 0, stagger: 0.1, duration: 0.7 }, '-=0.4')
-    .from('.skill-chip', { scale: 0, opacity: 0, stagger: 0.03, duration: 0.5 }, '-=0.5');
+  if (skippedIntro) {
+    gsap.set('.tech-bg', { opacity: 1 });
+  }
+
+  tl.from('.rail', { x: -40, opacity: 0, duration: 1.1, ease: SMOOTH })
+    .fromTo('.tech-bg', { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.out' }, skippedIntro ? 0 : '-=0.7')
+    .from(chars, { y: 40, opacity: 0, scale: 0.5, stagger: 0.07, duration: 1.1 }, '-=0.85')
+    .from('.hero__stamp', { y: 20, opacity: 0, letterSpacing: '0.22em', duration: 0.95, ease: SMOOTH }, '-=0.7')
+    .from('.hero__role', { y: 22, opacity: 0, scale: 0.92, duration: 0.95 }, '-=0.65')
+    .from('.hero__tagline', { y: 18, opacity: 0, duration: 0.85, ease: SMOOTH }, '-=0.6')
+    .from('.hero__eyebrow', { scale: 0.6, opacity: 0, duration: 0.8 }, '-=0.55')
+    .from('.hero__bio', { y: 16, opacity: 0, duration: 0.9, ease: SMOOTH }, '-=0.5')
+    .from('.manifest__line', { x: -16, opacity: 0, scale: 0.96, stagger: 0.12, duration: 0.75 }, '-=0.5')
+    .from('.hero__actions .btn', { scale: 0.7, opacity: 0, stagger: 0.12, duration: 0.9 }, '-=0.45')
+    .from('.hero__stat', { opacity: 0, y: 16, stagger: 0.12, duration: 0.85 }, '-=0.5')
+    .add(animateHeroStats, '-=0.4')
+    .from('.skill-wall-wrap', { opacity: 0, y: 16, duration: 1, ease: 'power2.out' }, '-=0.55');
+}
+
+function animateHeroStats() {
+  if (prefersReduced) return;
+  document.querySelectorAll('.hero__stat strong').forEach((el, i) => {
+    const end = parseInt(el.textContent, 10);
+    if (Number.isNaN(end)) return;
+    const obj = { val: 0 };
+    el.textContent = '0';
+    gsap.to(obj, {
+      val: end,
+      duration: 1.4,
+      delay: i * 0.12,
+      ease: 'power2.out',
+      onUpdate: () => {
+        el.textContent = String(Math.round(obj.val));
+      },
+    });
+  });
 }
 
 function setupScrollAnimations() {
@@ -149,12 +113,12 @@ function setupScrollAnimations() {
         start: 'top 82%',
         toggleActions: 'play none none reverse',
       },
-      y: 40,
+      y: 28,
       opacity: 0,
-      scale: 0.88,
+      scale: 0.94,
       stagger: 0.1,
-      duration: 0.85,
-      ease: BOING,
+      duration: 1,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -162,12 +126,12 @@ function setupScrollAnimations() {
   gsap.utils.toArray('.expertise-card').forEach((card, i) => {
     const tween = gsap.from(card, {
       scrollTrigger: { trigger: card, start: 'top 88%' },
-      y: 50,
+      y: 40,
       opacity: 0,
-      scale: 0.85,
-      duration: 0.8,
-      delay: (i % 2) * 0.08,
-      ease: BOING,
+      scale: 0.94,
+      duration: 1,
+      delay: (i % 2) * 0.1,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -175,12 +139,12 @@ function setupScrollAnimations() {
   gsap.utils.toArray('.project-card').forEach((card, i) => {
     const tween = gsap.from(card, {
       scrollTrigger: { trigger: card, start: 'top 90%' },
-      y: 60,
+      y: 48,
       opacity: 0,
-      scale: 0.82,
-      duration: 0.85,
-      delay: (i % 3) * 0.06,
-      ease: BOING,
+      scale: 0.94,
+      duration: 1.05,
+      delay: (i % 3) * 0.08,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -189,12 +153,12 @@ function setupScrollAnimations() {
     const pills = group.querySelectorAll('.tech-pill');
     const tween = gsap.from(pills, {
       scrollTrigger: { trigger: group, start: 'top 88%' },
-      y: 14,
+      y: 12,
       opacity: 0,
-      scale: 0.7,
-      stagger: 0.04,
-      duration: 0.6,
-      ease: BOING,
+      scale: 0.9,
+      stagger: 0.05,
+      duration: 0.85,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -202,10 +166,10 @@ function setupScrollAnimations() {
   gsap.utils.toArray('.about__portrait').forEach((el) => {
     const tween = gsap.from(el, {
       scrollTrigger: { trigger: el, start: 'top 80%' },
-      scale: 0.7,
+      scale: 0.92,
       opacity: 0,
-      duration: 1,
-      ease: BOING,
+      duration: 1.1,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -213,12 +177,12 @@ function setupScrollAnimations() {
   gsap.utils.toArray('.about__text p').forEach((p, i) => {
     const tween = gsap.from(p, {
       scrollTrigger: { trigger: p, start: 'top 90%' },
-      x: -24,
+      x: -18,
       opacity: 0,
-      scale: 0.95,
-      duration: 0.7,
-      delay: i * 0.1,
-      ease: BOING,
+      scale: 0.97,
+      duration: 0.9,
+      delay: i * 0.12,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -226,11 +190,11 @@ function setupScrollAnimations() {
   gsap.utils.toArray('.link-card, .cta').forEach((el) => {
     const tween = gsap.from(el, {
       scrollTrigger: { trigger: el, start: 'top 88%' },
-      y: 36,
+      y: 28,
       opacity: 0,
-      scale: 0.88,
-      duration: 0.85,
-      ease: BOING,
+      scale: 0.94,
+      duration: 1,
+      ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
@@ -242,19 +206,35 @@ function initCursor() {
   const cursor = document.getElementById('cursor');
   if (!cursor) return;
 
+  document.documentElement.classList.add('has-cursor');
   document.body.classList.add('has-cursor');
+  cursor.classList.add('is-on');
 
   const hoverables =
     'a, button, .project-card--has-link, .expertise-card, .filter-btn, .tech-pill, .link-card, .skill-chip';
 
+  const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const target = { x: pos.x, y: pos.y };
+  const blob = cursor.querySelector('.cursor__blob');
+  let cursorRaf = 0;
+
   document.addEventListener(
     'pointermove',
     (e) => {
-      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      target.x = e.clientX;
+      target.y = e.clientY;
       cursor.classList.add('is-on');
     },
     { passive: true },
   );
+
+  const tickCursor = () => {
+    pos.x += (target.x - pos.x) * 0.55;
+    pos.y += (target.y - pos.y) * 0.55;
+    cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+    cursorRaf = requestAnimationFrame(tickCursor);
+  };
+  cursorRaf = requestAnimationFrame(tickCursor);
 
   document.addEventListener('pointerleave', () => cursor.classList.remove('is-on'));
 
@@ -263,7 +243,7 @@ function initCursor() {
     (e) => {
       if (e.target.closest(hoverables)) {
         cursor.classList.add('is-hover');
-        gsap.to(cursor.querySelector('.cursor__blob'), { scale: 1.6, duration: 0.5, ease: BOING });
+        if (blob) blob.style.transform = 'translate(-50%, -50%) scale(1.6)';
       }
     },
     { passive: true },
@@ -273,7 +253,7 @@ function initCursor() {
     (e) => {
       if (e.target.closest(hoverables)) {
         cursor.classList.remove('is-hover');
-        gsap.to(cursor.querySelector('.cursor__blob'), { scale: 1, duration: 0.55, ease: BOING });
+        if (blob) blob.style.transform = 'translate(-50%, -50%) scale(1)';
       }
     },
     { passive: true },
@@ -283,18 +263,17 @@ function initCursor() {
 function initBoingHover() {
   if (prefersReduced) return;
 
-  const sel =
-    '.btn, .filter-btn, .project-card, .expertise-card, .skill-chip, .tech-pill, .link-card, .hero__stat, .cta, .rail__nav a, .rail__brand, .rail__cta, .about__portrait';
+  const sel = '.btn, .filter-btn, .skill-chip, .link-card, .rail__cta';
 
   document.querySelectorAll(sel).forEach((el) => {
     if (el.dataset.boing) return;
     el.dataset.boing = '1';
 
     el.addEventListener('mouseenter', () => {
-      gsap.to(el, { scale: 1.05, duration: 0.55, ease: BOING });
+      gsap.to(el, { scale: 1.04, duration: 0.4, ease: SMOOTH });
     });
     el.addEventListener('mouseleave', () => {
-      gsap.to(el, { scale: 1, duration: 0.65, ease: BOING });
+      gsap.to(el, { scale: 1, duration: 0.45, ease: SMOOTH });
     });
     el.addEventListener('mousedown', () => {
       gsap.to(el, { scale: 0.9, duration: 0.12, ease: 'power2.out' });
@@ -307,87 +286,6 @@ function initBoingHover() {
 
 export function reinitBoing() {
   initBoingHover();
-}
-
-function initCloudFloat() {
-  if (prefersReduced) return;
-  gsap.utils.toArray('.cloud').forEach((cloud, i) => {
-    gsap.to(cloud, {
-      y: `+=${18 + i * 8}`,
-      x: `+=${12 - i * 3}`,
-      duration: 3.5 + i * 0.8,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-    gsap.to(cloud, {
-      scale: 1.06,
-      duration: 2.5 + i * 0.5,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-  });
-}
-
-function initBubbles() {
-  const canvas = document.getElementById('bubbles');
-  if (!canvas || prefersReduced) return;
-
-  const ctx = canvas.getContext('2d');
-  let w, h, bubbles, animId;
-
-  const COLORS = [
-    'rgba(255,255,255,0.55)',
-    'rgba(200,220,255,0.45)',
-    'rgba(255,200,230,0.4)',
-    'rgba(180,230,255,0.5)',
-  ];
-
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-
-  function mkBubble() {
-    return {
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vy: -(Math.random() * 0.35 + 0.15),
-      vx: (Math.random() - 0.5) * 0.2,
-      r: Math.random() * 14 + 6,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    };
-  }
-
-  resize();
-  bubbles = Array.from({ length: 28 }, mkBubble);
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    for (const b of bubbles) {
-      b.x += b.vx;
-      b.y += b.vy;
-      if (b.y < -b.r) {
-        b.y = h + b.r;
-        b.x = Math.random() * w;
-      }
-      if (b.x < -b.r) b.x = w + b.r;
-      if (b.x > w + b.r) b.x = -b.r;
-      ctx.beginPath();
-      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-      ctx.fillStyle = b.color;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(b.x - b.r * 0.25, b.y - b.r * 0.25, b.r * 0.22, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.fill();
-    }
-    animId = requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('resize', resize, { passive: true });
-  draw();
 }
 
 function initScrollProgress() {
@@ -409,7 +307,7 @@ function initScrollProgress() {
 function initSpotlight() {
   if (!isFinePointer) return;
 
-  document.querySelectorAll('.expertise-card, .project-card, .cta').forEach((el) => {
+  document.querySelectorAll('.expertise-card, .project-card, .cta, .link-card').forEach((el) => {
     if (el.dataset.spotlight) return;
     el.dataset.spotlight = '1';
     el.addEventListener(
@@ -429,47 +327,76 @@ export function reinitSpotlight() {
 }
 
 function initMagnetic() {
+  /* désactivé — trop coûteux avec le curseur custom */
+}
+
+function initCardTilt() {
   if (!isFinePointer || prefersReduced) return;
 
-  document.querySelectorAll('.btn, .filter-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      gsap.fromTo(btn, { scale: 0.88 }, { scale: 1, duration: 0.7, ease: BOING });
+  document.querySelectorAll('.project-card, .expertise-card, .about__portrait').forEach((card) => {
+    if (card.dataset.tilt) return;
+    card.dataset.tilt = '1';
+
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const rx = ((e.clientY - r.top) / r.height - 0.5) * -4;
+      const ry = ((e.clientX - r.left) / r.width - 0.5) * 4;
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
     });
   });
 }
 
-function initCardTilt() {
-  /* remplacé par boing hover */
+function initSectionParallax() {
+  if (prefersReduced) return;
+
+  gsap.utils.toArray('.section-watermark').forEach((wm) => {
+    const tween = gsap.to(wm, {
+      y: 48,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wm.closest('.section') || wm,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.2,
+      },
+    });
+    if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
+  });
+}
+
+function initRailNavGlow() {
+  const links = document.querySelectorAll('.rail__nav a');
+  links.forEach((link) => {
+    link.addEventListener('mouseenter', () => {
+      if (!link.classList.contains('is-active')) {
+        gsap.to(link, { color: 'var(--accent)', duration: 0.35, ease: BOING });
+      }
+    });
+    link.addEventListener('mouseleave', () => {
+      if (!link.classList.contains('is-active')) {
+        gsap.to(link, { color: 'var(--muted)', duration: 0.4, ease: 'power2.out' });
+      }
+    });
+  });
 }
 
 export function reinitCardTilt() {
   initCardTilt();
 }
 
-function initSkyParallax() {
-  if (prefersReduced) return;
-  const sky = document.querySelector('.sky');
-  if (!sky) return;
-  window.addEventListener(
-    'mousemove',
-    (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 30;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      gsap.to(sky, { x, y, duration: 1.2, ease: 'sine.out' });
-    },
-    { passive: true },
-  );
-}
-
 export function animateProjectFilter(grid) {
   if (prefersReduced) return;
   gsap.from(grid.children, {
-    y: 40,
+    y: 32,
     opacity: 0,
-    scale: 0.6,
-    stagger: 0.06,
-    duration: 0.75,
-    ease: BOING,
+    scale: 0.92,
+    stagger: 0.08,
+    duration: 0.95,
+    ease: SMOOTH,
   });
 }
 
@@ -477,30 +404,33 @@ export function initEffects() {
   initCursor();
   initScrollProgress();
   initSpotlight();
-  initBubbles();
-  initCloudFloat();
-  initSkyParallax();
   initBoingHover();
 
   if (prefersReduced) {
     document.getElementById('intro')?.remove();
+    document.body.classList.remove('is-loading');
     document.body.classList.add('is-ready');
+    initTechBg();
+    gsap.set('.tech-bg', { opacity: 1 });
     setupScrollAnimations();
-    initMagnetic();
+    initSectionParallax();
     initCardTilt();
     initBoingHover();
+    initRailNavGlow();
     window.__reinitTilt = reinitCardTilt;
     window.__reinitSpotlight = reinitSpotlight;
     window.__reinitBoing = reinitBoing;
     return;
   }
 
-  runIntro(() => {
-    animateHero();
+  runIntro((skipped) => {
+    initTechBg();
+    animateHero(skipped);
     setupScrollAnimations();
-    initMagnetic();
+    initSectionParallax();
     initCardTilt();
     initBoingHover();
+    initRailNavGlow();
     window.__reinitTilt = reinitCardTilt;
     window.__reinitSpotlight = reinitSpotlight;
     window.__reinitBoing = reinitBoing;

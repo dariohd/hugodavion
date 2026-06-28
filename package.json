@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "start": "serve . -l 3001",
-    "dev": "serve . -l 3001"
+    "dev": "serve . -l 3001",
+    "capture": "node scripts/capture-shots.mjs"
   },
   "devDependencies": {
+    "playwright": "^1.61.1",
     "serve": "^14.2.4"
   },
   "dependencies": {

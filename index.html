@@ -14,15 +14,22 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="is-loading">
   <div id="intro" class="intro" aria-hidden="true">
     <div class="intro__grid" aria-hidden="true"></div>
+    <div class="intro__scan" aria-hidden="true"></div>
+    <div class="intro__terminal" id="intro-terminal" aria-hidden="true"></div>
     <div class="intro__inner">
       <p class="intro__logo" data-site="brand"></p>
       <p class="intro__tag">boot sequence // portfolio.sys</p>
       <div class="intro__bar"><span class="intro__bar-fill"></span></div>
       <span class="intro__counter">000</span>
     </div>
+    <div class="intro__shutters" aria-hidden="true">
+      <div class="intro__shutter intro__shutter--top"></div>
+      <div class="intro__shutter intro__shutter--bottom"></div>
+    </div>
+    <button type="button" class="intro__skip" id="intro-skip">Passer l'intro</button>
   </div>
 
   <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
@@ -32,13 +39,17 @@
   </div>
 
   <div class="noise" aria-hidden="true"></div>
-  <div class="sky" aria-hidden="true">
-    <div class="cloud cloud--1"></div>
-    <div class="cloud cloud--2"></div>
-    <div class="cloud cloud--3"></div>
-    <div class="cloud cloud--4"></div>
+  <div class="tech-bg" aria-hidden="true">
+    <div class="tech-bg__base"></div>
+    <canvas id="tech-canvas"></canvas>
+    <div class="tech-bg__glow" id="tech-glow" aria-hidden="true"></div>
+    <div class="tech-bg__overlay"></div>
+    <div class="tech-bg__meta">
+      <span>coord.sys</span>
+      <span>render: canvas2d</span>
+      <span>fps: adaptive</span>
+    </div>
   </div>
-  <canvas id="bubbles" aria-hidden="true"></canvas>
 
   <aside class="rail" id="rail">
     <a class="rail__brand" href="#top" data-site="brand"></a>
@@ -151,9 +162,9 @@
           <div class="section-head">
             <span class="section-watermark" aria-hidden="true">+</span>
             <div>
-              <p class="eyebrow">Autres formats</p>
-              <h2 class="section__title">Autres portfolios</h2>
-              <p class="section__lead">Formats complémentaires (commercial, jeu, vidéo).</p>
+              <p class="eyebrow">Autre format</p>
+              <h2 class="section__title">Portfolio interactif</h2>
+              <p class="section__lead">Version exploratoire des projets, chambre pixel et bureau DHD OS.</p>
             </div>
           </div>
           <div class="links-row" id="other-portfolios"></div>

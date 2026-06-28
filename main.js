@@ -142,6 +142,8 @@ function initProfile() {
   if (cv) {
     if (profile.cv) {
       cv.href = profile.cv;
+      cv.target = '_blank';
+      cv.rel = 'noopener noreferrer';
       cv.hidden = false;
     } else {
       cv.remove();
@@ -212,10 +214,53 @@ function initHeroStats() {
     .join('');
 }
 
+function interleaveSkills(list) {
+  const buckets = [
+    ['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Tailwind CSS', 'PWA'],
+    ['Java', 'C#', 'Express', 'PostgreSQL', 'Supabase', 'Neon', 'AI SDK'],
+    ['Unreal Engine 5', 'C++', 'Godot 4', 'GDScript', 'Babylon.js', 'WebGL', 'WASM', 'Canvas 2D'],
+    ['GSAP', 'Framer Motion', 'Playwright', 'ffmpeg', 'Vercel', 'SEO', 'OpenStreetMap'],
+  ];
+  const known = new Set(buckets.flat());
+  const rest = list.filter((s) => !known.has(s));
+  if (rest.length) buckets.push(rest);
+  const out = [];
+  const max = Math.max(...buckets.map((b) => b.length));
+  for (let i = 0; i < max; i += 1) {
+    for (const bucket of buckets) {
+      if (bucket[i]) out.push(bucket[i]);
+    }
+  }
+  return out;
+}
+
 function initMarquee() {
-  const el = document.getElementById('marquee');
-  if (!el) return;
-  el.innerHTML = marqueeSkills.map((s) => `<span class="skill-chip">${s}</span>`).join('');
+  const wrap = document.getElementById('marquee');
+  if (!wrap || wrap.dataset.marqueeReady) return;
+  wrap.dataset.marqueeReady = '1';
+
+  const skills = interleaveSkills(marqueeSkills);
+  const half = Math.ceil(skills.length / 2);
+  const trackB = [...skills.slice(half), ...skills.slice(0, half)];
+
+  wrap.innerHTML = '';
+  wrap.classList.add('skill-wall--dual');
+
+  [skills, trackB].forEach((list, index) => {
+    const track = document.createElement('div');
+    track.className = `skill-wall__track${index === 1 ? ' skill-wall__track--alt' : ''}`;
+    const chips = list.map((s) => `<span class="skill-chip">${s}</span>`).join('');
+    track.innerHTML = chips + chips;
+    wrap.appendChild(track);
+
+    requestAnimationFrame(() => {
+      const loopWidth = track.scrollWidth / 2;
+      if (loopWidth > 0) {
+        const seconds = Math.max(28, loopWidth / 52);
+        track.style.setProperty('--marquee-duration', `${seconds}s`);
+      }
+    });
+  });
 }
 
 function parseBold(text) {
@@ -226,7 +271,10 @@ function initAbout() {
   setText('[data-about]', 'about', about);
   const el = document.getElementById('about-text');
   if (!el) return;
-  el.innerHTML = about.paragraphs.map((p) => `<p>${parseBold(p)}</p>`).join('');
+  const parts = [];
+  if (about.goal) parts.push(`<p class="about__goal">${parseBold(about.goal)}</p>`);
+  parts.push(...about.paragraphs.map((p) => `<p>${parseBold(p)}</p>`));
+  el.innerHTML = parts.join('');
 }
 
 function initExpertise() {
@@ -248,14 +296,24 @@ function initExpertise() {
 }
 
 function projectImageSrc(p) {
-  return p.imageLocal || p.image || null;
+  return p.image || p.imageLocal || null;
+}
+
+function projectImageFallback(p) {
+  if (p.image && p.imageLocal && p.image !== p.imageLocal) return p.imageLocal;
+  return null;
 }
 
 function projectCard(p) {
   const target = p.local ? '' : ' target="_blank" rel="noopener noreferrer"';
   const imgSrc = projectImageSrc(p);
+  const imgFallback = projectImageFallback(p);
+  const imgPos = p.imagePosition || 'top center';
+  const fallbackAttr = imgFallback
+    ? ` data-fallback="${imgFallback}" onerror="if(this.dataset.fallback&&!this.dataset.fell){this.dataset.fell='1';this.src=this.dataset.fallback}"`
+    : '';
   const img = imgSrc
-    ? `<div class="project-card__img"><img src="${imgSrc}" alt="Aperçu de ${p.name}" loading="lazy" decoding="async" /></div>`
+    ? `<div class="project-card__img"><img src="${imgSrc}" alt="Aperçu de ${p.name}" loading="lazy" decoding="async" style="object-position:${imgPos}"${fallbackAttr} /></div>`
     : `<div class="project-card__img project-card__img--placeholder" aria-hidden="true"><span>${p.name.charAt(0)}</span></div>`;
 
   const overlay = p.url
@@ -270,6 +328,14 @@ function projectCard(p) {
     ? `<a class="project-card__repo" href="${p.repo}" target="_blank" rel="noopener noreferrer">Code</a>`
     : '';
 
+  const caseStudy =
+    p.role || p.outcome
+      ? `<div class="project-card__case">
+          ${p.role ? `<p class="project-card__role"><span>Rôle</span> ${p.role}</p>` : ''}
+          ${p.outcome ? `<p class="project-card__outcome"><span>Résultat</span> ${p.outcome}</p>` : ''}
+        </div>`
+      : '';
+
   return `
     <article class="project-card${p.featured ? ' project-card--featured' : ''}${p.url ? ' project-card--has-link' : ''}" data-category="${p.category}">
       ${overlay}
@@ -281,6 +347,7 @@ function projectCard(p) {
         </div>
         <h3>${p.name}</h3>
         <p>${p.description}</p>
+        ${caseStudy}
         <div class="project-card__stack">${p.stack.map((t) => `<span>${t}</span>`).join('')}</div>
         <div class="project-card__links">
           ${primaryLink}

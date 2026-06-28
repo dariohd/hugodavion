@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV · Hugo Davion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --text: #3d4f7a;
+      --muted: #6a7da8;
+      --accent: #5a7fd4;
+      --border: #c8d8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      color: var(--text);
+      line-height: 1.55;
+      background: #eef4fc;
+      padding: 2rem 1rem;
+    }
+    .cv {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2.75rem;
+      box-shadow: 0 12px 40px rgba(100, 140, 210, 0.12);
+    }
+    .cv__head {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+    .cv__role { color: var(--accent); font-weight: 700; font-size: 1.1rem; margin-top: 0.25rem; }
+    .cv__tagline { color: var(--muted); margin-top: 0.35rem; }
+    .cv__contact {
+      font-size: 0.92rem;
+      text-align: right;
+      color: var(--muted);
+    }
+    .cv__contact a { color: var(--accent); text-decoration: none; }
+    h2 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin: 1.5rem 0 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    p, li { font-size: 0.95rem; color: var(--muted); }
+    ul { padding-left: 1.2rem; }
+    li { margin-bottom: 0.35rem; }
+    .cv__project { margin-bottom: 1rem; }
+    .cv__project strong { color: var(--text); display: block; margin-bottom: 0.15rem; }
+    .cv__project span { font-size: 0.88rem; }
+    .cv__print {
+      display: block;
+      width: fit-content;
+      margin: 2rem auto 0;
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .cv { box-shadow: none; border: none; border-radius: 0; max-width: none; }
+      .cv__print, .cv__back { display: none !important; }
+    }
+    .cv__back {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <article class="cv" id="cv-root"></article>
+  <button type="button" class="cv__print" onclick="window.print()">Enregistrer en PDF</button>
+  <a class="cv__back" href="./">← Retour au portfolio</a>
+  <script type="module">
+    import { profile, about, projects, stackGroups, site, metaProjectIds } from './config.js';
+
+    const live = projects.filter((p) => p.url && !p.local && !metaProjectIds.has(p.id));
+    const featured = projects.filter((p) => p.featured);
+
+    const skills = stackGroups.flatMap((g) => g.items);
+    const uniqueSkills = [...new Set(skills)];
+
+    document.getElementById('cv-root').innerHTML = `
+      <header class="cv__head">
+        <div>
+          <h1>${profile.name}</h1>
+          <p class="cv__role">${profile.role}</p>
+          <p class="cv__tagline">${profile.tagline}</p>
+        </div>
+        <div class="cv__contact">
+          <div>${profile.location}</div>
+          <div><a href="mailto:${profile.email}">${profile.email}</a></div>
+          <div>${profile.phone}</div>
+          <div><a href="${profile.github}">github.com/${profile.githubUser}</a></div>
+          ${site.canonicalUrl ? `<div><a href="${site.canonicalUrl}">${site.canonicalUrl.replace(/^https?:\/\//, '')}</a></div>` : ''}
+        </div>
+      </header>
+
+      <section>
+        <h2>Profil</h2>
+        ${about.goal ? `<p><strong style="color:var(--text)">${about.goal}</strong></p>` : ''}
+        ${about.paragraphs.map((p) => `<p style="margin-top:0.65rem">${p}</p>`).join('')}
+      </section>
+
+      <section>
+        <h2>Compétences</h2>
+        <ul>${uniqueSkills.map((s) => `<li>${s}</li>`).join('')}</ul>
+      </section>
+
+      <section>
+        <h2>Projets sélectionnés</h2>
+        ${featured.map((p) => `
+          <div class="cv__project">
+            <strong>${p.name}</strong>
+            <span>${p.description}</span>
+            ${p.role ? `<br><span><em>Rôle :</em> ${p.role}</span>` : ''}
+            ${p.outcome ? `<br><span><em>Résultat :</em> ${p.outcome}</span>` : ''}
+            ${p.url && !p.local ? `<br><span>${p.url}</span>` : ''}
+          </div>
+        `).join('')}
+      </section>
+
+      <section>
+        <h2>Réalisations en ligne</h2>
+        <ul>
+          ${live.map((p) => `<li><strong style="color:var(--text)">${p.name}</strong> — ${p.url}</li>`).join('')}
+        </ul>
+      </section>
+    `;
+
+    document.title = `CV · ${profile.name}`;
+  </script>
+</body>
+</html>
