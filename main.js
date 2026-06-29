@@ -376,11 +376,18 @@ function isMonorepoLocal() {
 }
 
 function resolveProjectUrl(p) {
+  if (isMonorepoLocal() && p.localUrl) return p.localUrl;
   if (!p.url) return null;
   if (/^https?:\/\//i.test(p.url)) return p.url;
-  if (p.url.startsWith('./')) return p.url;
-  if (!isMonorepoLocal()) return null;
-  return p.url;
+  if (p.url.startsWith('./')) {
+    return site.canonicalUrl || p.url;
+  }
+  if (isMonorepoLocal()) return p.url;
+  return null;
+}
+
+function isRepoUrl(url) {
+  return /github\.com/i.test(url);
 }
 
 function projectCard(p) {
@@ -397,16 +404,25 @@ function projectCard(p) {
     : `<div class="project-card__img project-card__img--placeholder" aria-hidden="true"><span>${p.name.charAt(0)}</span></div>`;
 
   const overlay = url
-    ? `<a class="project-card__overlay" href="${url}"${target} aria-label="${p.name} — ${p.local ? 'Ouvrir' : 'Voir le projet'}"></a>`
+    ? `<a class="project-card__overlay" href="${url}"${target} aria-label="${p.name} — ${p.local ? 'Ouvrir' : isRepoUrl(url) ? 'Voir le dépôt' : 'Voir le projet'}"></a>`
     : '';
 
-  const primaryLink = url
-    ? `<span class="project-card__cta">${p.local ? 'Ouvrir →' : 'Voir en ligne →'}</span>`
+  const ctaLabel = !url
+    ? null
+    : p.local
+      ? 'Ouvrir →'
+      : isRepoUrl(url)
+        ? 'Voir le dépôt →'
+        : 'Voir en ligne →';
+
+  const primaryLink = ctaLabel
+    ? `<span class="project-card__cta">${ctaLabel}</span>`
     : `<span class="project-card__personal">${p.demoNote || 'Projet perso · démo à venir'}</span>`;
 
-  const repoLink = p.repo
-    ? `<a class="project-card__repo" href="${p.repo}" target="_blank" rel="noopener noreferrer">Code</a>`
-    : '';
+  const repoLink =
+    p.repo && p.repo !== url
+      ? `<a class="project-card__repo" href="${p.repo}" target="_blank" rel="noopener noreferrer">Code</a>`
+      : '';
 
   const caseStudy =
     p.role || p.outcome

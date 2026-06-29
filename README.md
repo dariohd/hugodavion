@@ -1,6 +1,6 @@
 # hugodavion
 
-![dariohd.github.io/hugodavion](docs/screenshot.png)
+![hugodavion.vercel.app](docs/screenshot.png)
 
 Portfolio technique de **Hugo Davion** : compétences, stack, projets filtrables avec études de cas et CV intégré.
 
@@ -9,7 +9,7 @@ Portfolio technique de **Hugo Davion** : compétences, stack, projets filtrables
 | **URL production** | https://hugodavion.vercel.app/ |
 | **Dépôt GitHub** | [github.com/dariohd/hugodavion](https://github.com/dariohd/hugodavion) |
 | **Notes techniques** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
-| **Hébergement** | GitHub Pages / Vercel |
+| **Hébergement** | Vercel |
 
 ## Stack
 

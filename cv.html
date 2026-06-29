@@ -129,7 +129,13 @@
       metaProjectIds,
     } from './config.js';
 
-    const live = projects.filter((p) => p.url && !p.local && !metaProjectIds.has(p.id));
+    const live = projects.filter(
+      (p) =>
+        p.url &&
+        !p.local &&
+        !metaProjectIds.has(p.id) &&
+        !/github\.com/i.test(p.url),
+    );
     const featured = projects.filter((p) => p.featured);
     const skills = [...new Set(stackGroups.flatMap((g) => g.items))];
 

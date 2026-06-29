@@ -222,11 +222,10 @@ export const projects = [
     description:
       'Forum web full-stack : threads, réponses, upload fichiers (Vercel Blob), API serverless et base Neon PostgreSQL.',
     role: 'Full-stack React · API · base de données',
-    outcome: 'Application complète prête au déploiement Vercel',
+    outcome: 'Application complète · déploiement Vercel à venir',
     imageLocal: 'assets/projects/forum.svg',
     stack: ['React', 'TypeScript', 'Vite', 'Neon', 'PostgreSQL', 'Vercel Blob', 'API REST'],
-    url: '../../Sites/Forum/dist/',
-    local: true,
+    localUrl: '../../Sites/Forum/dist/',
     demoNote: 'Démo locale (build Vite) · déploiement à venir',
   },
   /* ——— Outils ——— */
@@ -267,7 +266,7 @@ export const projects = [
       'Portfolio interactif : chambre pixel rétro et bureau DHD OS, explorateur de projets avec aperçus live et carte Canvas 2D.',
     role: 'React, TypeScript, Vite, Canvas 2D',
     outcome: 'Portfolio gamifié en ligne · exploration et fenêtres OS',
-    imageLocal: 'assets/projects/portfolio-dariohd.svg',
+    imageLocal: 'assets/projects/portfolio-dariohd.jpg',
     stack: ['React', 'TypeScript', 'Vite', 'Canvas 2D', 'Framer Motion', 'Zustand'],
     url: hubLinks.portfolioDariohd,
     repo: 'https://github.com/dariohd/dariohd',
@@ -277,11 +276,10 @@ export const projects = [
     category: 'portfolio',
     name: 'hugodavion',
     description: 'Portfolio technique : compétences, stack et projets filtrables par domaine (sites, applications, jeux).',
-    imageLocal: 'assets/projects/portfolio-site.svg',
+    imageLocal: 'assets/projects/portfolio-site.jpg',
     stack: ['HTML', 'CSS', 'JS modules', 'GSAP', 'SEO'],
-    url: './',
+    url: 'https://hugodavion.vercel.app/',
     repo: 'https://github.com/dariohd/hugodavion',
-    local: true,
   },
   /* ——— Entreprise ——— */
   {
@@ -292,11 +290,12 @@ export const projects = [
     description:
       'One-page dynamique : carrousel de réalisations, mini-navigateurs intégrés, modules JS, thèmes CSS. Site commercial artisans & tourisme.',
     role: 'Produit et site commercial · modules JS et thèmes',
-    outcome: 'bulletonsite.com en production, démos intégrées dans la page',
+    outcome: 'www.bulletonsite.com en production, démos intégrées dans la page',
+    image: 'https://www.bulletonsite.com/assets/og-bubble.svg',
     imageLocal: 'assets/projects/bullweb.jpg',
     imagePosition: 'top center',
     stack: ['HTML', 'CSS', 'JS modules', 'Thèmes CSS', 'Vercel'],
-    url: 'https://bulletonsite.com',
+    url: 'https://www.bulletonsite.com/',
     repo: 'https://github.com/dariohd/BulleTonSite',
   },
   {
@@ -343,7 +342,7 @@ export const projects = [
     name: 'Pokémon Rumble',
     description:
       'Jeu navigateur top-down Canvas 2D : figurines, arène, vagues, recrutement et améliorations permanentes.',
-    imageLocal: 'assets/projects/pokemon-rumble.svg',
+    imageLocal: 'assets/projects/pokemon-rumble.jpg',
     stack: ['Vite', 'Canvas 2D', 'JavaScript'],
     url: 'https://pokemonrumbleweb.vercel.app/',
     repo: 'https://github.com/dariohd/PokemonRumbleWeb',
@@ -358,10 +357,8 @@ export const projects = [
     outcome: 'Double interface MVVM + React 19',
     imageLocal: 'assets/projects/pokedex.svg',
     stack: ['.NET 10', 'WPF', 'MVVM', 'React 19', 'Vite', 'Tailwind CSS', 'TypeScript'],
-    url: '../../Jeux/Pokedex/web/dist/',
+    url: 'https://github.com/dariohd/Pokedex',
     repo: 'https://github.com/dariohd/Pokedex',
-    local: true,
-    demoNote: 'Démo locale (build web) · version WPF disponible',
   },
   {
     id: 'pokemon-hoopa',
@@ -499,7 +496,13 @@ export const otherPortfolios = [
   { label: 'dariohd', href: hubLinks.portfolioDariohd, desc: 'Portfolio interactif' },
 ];
 
-const liveProjects = projects.filter((p) => p.url && !p.local && !metaProjectIds.has(p.id));
+const liveProjects = projects.filter(
+  (p) =>
+    p.url &&
+    !p.local &&
+    !metaProjectIds.has(p.id) &&
+    !/github\.com/i.test(p.url),
+);
 const gameProjects = projects.filter((p) => p.category === 'jeux');
 
 export const heroStats = [
