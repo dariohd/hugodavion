@@ -1683,13 +1683,21 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
     overflow: hidden;
   }
 
-  body.nav-open::before {
-    content: '';
+  .nav-backdrop {
+    display: none;
     position: fixed;
     inset: 0;
     z-index: 240;
+    margin: 0;
+    padding: 0;
+    border: 0;
     background: rgba(74, 90, 138, 0.28);
     backdrop-filter: blur(3px);
+    cursor: pointer;
+  }
+
+  body.nav-open .nav-backdrop {
+    display: block;
   }
 
   .rail__brand,

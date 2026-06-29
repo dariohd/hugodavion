@@ -154,6 +154,16 @@ function initProfile() {
       cv.remove();
     }
   }
+
+  const cvPreview = document.getElementById('cv-preview-link');
+  if (cvPreview) {
+    if (profile.cvPreview) {
+      cvPreview.href = profile.cvPreview;
+      cvPreview.hidden = false;
+    } else {
+      cvPreview.remove();
+    }
+  }
 }
 
 function initHeroManifest() {
@@ -170,6 +180,7 @@ function initHeroManifest() {
 function closeNav() {
   document.body.classList.remove('nav-open');
   document.getElementById('nav-toggle')?.setAttribute('aria-expanded', 'false');
+  document.getElementById('nav-backdrop')?.setAttribute('hidden', '');
 }
 
 function initNav() {
@@ -178,11 +189,16 @@ function initNav() {
   navEl.innerHTML = nav.map((n) => `<a href="#${n.id}">${n.label}</a>`).join('');
 
   const toggle = document.getElementById('nav-toggle');
+  const backdrop = document.getElementById('nav-backdrop');
+
   toggle?.addEventListener('click', (e) => {
     e.stopPropagation();
     const open = document.body.classList.toggle('nav-open');
     toggle.setAttribute('aria-expanded', String(open));
+    if (open) backdrop?.removeAttribute('hidden');
+    else backdrop?.setAttribute('hidden', '');
   });
+  backdrop?.addEventListener('click', () => closeNav());
   navEl.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => closeNav());
   });
@@ -355,8 +371,21 @@ function projectImageFallback(p) {
   return null;
 }
 
+function isMonorepoLocal() {
+  return ['localhost', '127.0.0.1'].includes(window.location.hostname);
+}
+
+function resolveProjectUrl(p) {
+  if (!p.url) return null;
+  if (/^https?:\/\//i.test(p.url)) return p.url;
+  if (p.url.startsWith('./')) return p.url;
+  if (!isMonorepoLocal()) return null;
+  return p.url;
+}
+
 function projectCard(p) {
-  const target = p.local ? '' : ' target="_blank" rel="noopener noreferrer"';
+  const url = resolveProjectUrl(p);
+  const target = url && !p.local ? ' target="_blank" rel="noopener noreferrer"' : '';
   const imgSrc = projectImageSrc(p);
   const imgFallback = projectImageFallback(p);
   const imgPos = p.imagePosition || 'top center';
@@ -367,11 +396,11 @@ function projectCard(p) {
     ? `<div class="project-card__img"><img src="${imgSrc}" alt="Aperçu de ${p.name}" loading="lazy" decoding="async" style="object-position:${imgPos}"${fallbackAttr} /></div>`
     : `<div class="project-card__img project-card__img--placeholder" aria-hidden="true"><span>${p.name.charAt(0)}</span></div>`;
 
-  const overlay = p.url
-    ? `<a class="project-card__overlay" href="${p.url}"${target} aria-label="${p.name} — ${p.local ? 'Ouvrir' : 'Voir le projet'}"></a>`
+  const overlay = url
+    ? `<a class="project-card__overlay" href="${url}"${target} aria-label="${p.name} — ${p.local ? 'Ouvrir' : 'Voir le projet'}"></a>`
     : '';
 
-  const primaryLink = p.url
+  const primaryLink = url
     ? `<span class="project-card__cta">${p.local ? 'Ouvrir →' : 'Voir en ligne →'}</span>`
     : `<span class="project-card__personal">${p.demoNote || 'Projet perso · démo à venir'}</span>`;
 
@@ -388,7 +417,7 @@ function projectCard(p) {
       : '';
 
   return `
-    <article class="project-card${p.featured ? ' project-card--featured' : ''}${p.url ? ' project-card--has-link' : ''}" data-category="${p.category}">
+    <article class="project-card${p.featured ? ' project-card--featured' : ''}${url ? ' project-card--has-link' : ''}" data-category="${p.category}">
       ${overlay}
       ${img}
       <div class="project-card__body">
@@ -514,37 +543,54 @@ function initOtherPortfolios() {
   const row = document.getElementById('other-portfolios');
   if (!row) return;
   row.innerHTML = otherPortfolios
-    .map(
-      (p) => `
-    <a class="link-card" href="${p.href}">
+    .map((p) => {
+      const external = /^https?:\/\//i.test(p.href);
+      const target = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+      return `
+    <a class="link-card" href="${p.href}"${target}>
       <strong>${p.label}</strong>
       <span>${p.desc}</span>
       <i aria-hidden="true">→</i>
-    </a>`,
-    )
+    </a>`;
+    })
     .join('');
 }
 
 function initFooterHub() {
   const hub = document.getElementById('hub-link');
-  if (hub) hub.href = hubLinks.root;
+  if (!hub) return;
+  if (!isMonorepoLocal()) {
+    hub.hidden = true;
+    return;
+  }
+  hub.href = hubLinks.root;
+  hub.hidden = false;
 }
 
 function initHeader() {
   const links = document.querySelectorAll('.nav a');
   const sections = nav.map((n) => document.getElementById(n.id)).filter(Boolean);
+  const visible = new Map();
 
   const spy = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          links.forEach((a) => {
-            a.classList.toggle('is-active', a.getAttribute('href') === `#${entry.target.id}`);
-          });
+        visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+      });
+      let bestId = null;
+      let bestRatio = 0;
+      for (const [id, ratio] of visible) {
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestId = id;
         }
+      }
+      if (!bestId || bestRatio <= 0) return;
+      links.forEach((a) => {
+        a.classList.toggle('is-active', a.getAttribute('href') === `#${bestId}`);
       });
     },
-    { rootMargin: '-40% 0px -55% 0px' },
+    { rootMargin: '-40% 0px -55% 0px', threshold: [0, 0.15, 0.35, 0.55, 0.75, 1] },
   );
   sections.forEach((s) => spy.observe(s));
 }

@@ -15,12 +15,12 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="is-loading">
-  <div id="intro" class="intro" aria-hidden="true">
+  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title">
     <div class="intro__grid" aria-hidden="true"></div>
     <div class="intro__scan" aria-hidden="true"></div>
     <div class="intro__terminal" id="intro-terminal" aria-hidden="true"></div>
     <div class="intro__inner">
-      <p class="intro__logo" data-site="brand"></p>
+      <p class="intro__logo" id="intro-title" data-site="brand"></p>
       <p class="intro__tag">boot sequence // portfolio.sys</p>
       <div class="intro__bar"><span class="intro__bar-fill"></span></div>
       <span class="intro__counter">000</span>
@@ -66,6 +66,8 @@
       </button>
     </header>
 
+    <button type="button" class="nav-backdrop" id="nav-backdrop" aria-label="Fermer le menu" hidden></button>
+
     <main id="top">
       <section class="hero">
         <div class="container">
@@ -83,6 +85,7 @@
           <div class="hero__actions">
             <a class="btn" href="#projets">Voir les projets</a>
             <a class="btn btn--outline" id="github-hero" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn--outline" id="cv-preview-link" href="cv.html" hidden>Voir le CV</a>
             <a class="btn btn--outline" id="cv-link" href="#" hidden>Télécharger le CV</a>
           </div>
           <div class="hero__stats" id="hero-stats"></div>
@@ -194,7 +197,7 @@
       <div class="container footer__inner">
         <span class="footer__brand" data-site="brand"></span>
         <span>© <span id="year"></span> <span data-profile="name"></span></span>
-        <a href="../" id="hub-link">Hub portfolio</a>
+        <a href="../" id="hub-link" hidden>Hub portfolio</a>
       </div>
     </footer>
   </div>

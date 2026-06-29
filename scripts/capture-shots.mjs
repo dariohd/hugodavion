@@ -27,13 +27,7 @@ const captures = [
 ];
 
 /** Images OG / assets officiels (évite les captures ratées) */
-const ogDownloads = [
-  {
-    file: 'bullweb.jpg',
-    url: 'https://bulletonsite.com/assets/og-bubble.svg',
-    asSvg: true,
-  },
-];
+const ogDownloads = [];
 
 /** Projets locaux sans URL — vignette SVG brandée */
 const localSvgs = [
@@ -93,10 +87,12 @@ for (const entry of localSvgs) {
   console.log(`SVG ${entry.file}`);
 }
 
-try {
-  await downloadOg(ogDownloads[0]);
-} catch (err) {
-  console.warn('OG bullweb:', err.message);
+if (ogDownloads.length) {
+  try {
+    await downloadOg(ogDownloads[0]);
+  } catch (err) {
+    console.warn('OG download:', err.message);
+  }
 }
 
 let browser;

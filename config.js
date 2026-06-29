@@ -2,7 +2,7 @@ export const site = {
   brand: 'Hugo Davion',
   locale: 'fr_FR',
   /** URL absolue du site en production (pour OG / canonical). Laisser vide en local. */
-  canonicalUrl: 'https://dariohd.github.io/hugodavion/',
+  canonicalUrl: 'https://hugodavion.vercel.app/',
   description:
     'Portfolio de Hugo Davion — développeur full-stack en alternance (CGI), sites web, PWA métier et game dev.',
   ogImage: 'assets/og-cover.jpg',
@@ -28,9 +28,9 @@ export const profile = {
 };
 
 export const hubLinks = {
-  root: '../../',
-  bulleTonSite: '../../Entreprise/BulleTonSite/',
-  portfolioDariohd: '../dariohd/',
+  /** Hub Portfolio/index.html — monorepo local uniquement */
+  root: '../',
+  portfolioDariohd: 'https://dariohd.vercel.app/',
 };
 
 export const nav = [
@@ -208,7 +208,7 @@ export const projects = [
       'Château et gîtes en Charente-Maritime : site Next.js multilingue, réservation, animations Framer Motion et SEO.',
     role: 'Développement Next.js · client tourisme premium',
     outcome: 'Site en production sur domainederoche.vercel.app',
-    image: 'https://l.icdbcdn.com/oh/f2bbba72-1407-4f30-9f44-bebc70b6384e.jpg?w=1200',
+    image: 'https://l.icdbcdn.com/oh/509ecfea-facf-4d85-924d-7e36b8343ddf.jpg',
     imageLocal: 'assets/projects/domainederoche.jpg',
     imagePosition: 'center 30%',
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n', 'SEO'],
@@ -225,9 +225,9 @@ export const projects = [
     outcome: 'Application complète prête au déploiement Vercel',
     imageLocal: 'assets/projects/forum.svg',
     stack: ['React', 'TypeScript', 'Vite', 'Neon', 'PostgreSQL', 'Vercel Blob', 'API REST'],
-    url: '../../Sites/Forum/',
+    url: '../../Sites/Forum/dist/',
     local: true,
-    demoNote: 'Démo locale · déploiement à venir',
+    demoNote: 'Démo locale (build Vite) · déploiement à venir',
   },
   /* ——— Outils ——— */
   {
@@ -271,7 +271,6 @@ export const projects = [
     stack: ['React', 'TypeScript', 'Vite', 'Canvas 2D', 'Framer Motion', 'Zustand'],
     url: hubLinks.portfolioDariohd,
     repo: 'https://github.com/dariohd/dariohd',
-    local: true,
   },
   {
     id: 'portfolio-site',
@@ -322,8 +321,6 @@ export const projects = [
       'Prototype coop horreur UE5 : FPS, objets maudits en physique, entité patrouille, puzzles coop et contrat de corruption.',
     imageLocal: 'assets/projects/carry-the-curse.svg',
     stack: ['Unreal Engine 5', 'C++', 'Blueprints', '3D', 'Gameplay'],
-    url: '../../Jeux/CarryTheCurse/',
-    local: true,
     demoNote: 'Prototype UE5 · éditeur requis',
   },
   {
@@ -361,10 +358,10 @@ export const projects = [
     outcome: 'Double interface MVVM + React 19',
     imageLocal: 'assets/projects/pokedex.svg',
     stack: ['.NET 10', 'WPF', 'MVVM', 'React 19', 'Vite', 'Tailwind CSS', 'TypeScript'],
-    url: '../../Jeux/Pokedex/',
+    url: '../../Jeux/Pokedex/web/dist/',
     repo: 'https://github.com/dariohd/Pokedex',
     local: true,
-    demoNote: 'Démo locale · WPF ou web',
+    demoNote: 'Démo locale (build web) · version WPF disponible',
   },
   {
     id: 'pokemon-hoopa',
@@ -374,9 +371,7 @@ export const projects = [
       'Fan game Godot 4 : aventure narrative, hub dimensionnel et exploration 2D/3D (Kalos, Unys).',
     imageLocal: 'assets/projects/pokemon-hoopa.svg',
     stack: ['Godot 4', 'GDScript', '2D / 3D', 'Spritesheets'],
-    url: '../../Jeux/PokemonHoopa/',
-    local: true,
-    demoNote: 'Fan game · Godot 4.7+',
+    demoNote: 'Fan game Godot · éditeur requis',
   },
 ];
 

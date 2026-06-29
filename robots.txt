@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dariohd.github.io/hugodavion/sitemap.xml
+Sitemap: https://hugodavion.vercel.app/sitemap.xml

@@ -6,7 +6,7 @@ Portfolio technique de **Hugo Davion** : compétences, stack, projets filtrables
 
 | | |
 |---|---|
-| **URL production** | https://dariohd.github.io/hugodavion/ |
+| **URL production** | https://hugodavion.vercel.app/ |
 | **Dépôt GitHub** | [github.com/dariohd/hugodavion](https://github.com/dariohd/hugodavion) |
 | **Notes techniques** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | **Hébergement** | GitHub Pages / Vercel |
@@ -90,7 +90,7 @@ Met à jour `assets/projects/*.jpg` depuis les URLs dans `scripts/capture-shots.
 
 ## SEO
 
-- `site.canonicalUrl` : `https://dariohd.github.io/hugodavion/`
+- `site.canonicalUrl` : `https://hugodavion.vercel.app/`
 - Meta description dans `index.html`
 - `sitemap.xml` maintenu à la main
 
