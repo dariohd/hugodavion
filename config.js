@@ -202,7 +202,6 @@ export const projects = [
   {
     id: 'domaine-roche',
     category: 'sites',
-    featured: true,
     name: 'Domaine de Roche',
     description:
       'Château et gîtes en Charente-Maritime : site Next.js multilingue, réservation, animations Framer Motion et SEO.',
@@ -301,6 +300,7 @@ export const projects = [
   {
     id: 'bulle',
     category: 'entreprise',
+    featured: true,
     name: 'Bulle ChatBot',
     description:
       'Widget IA embarquable pour sites vitrines : assistant contextuel, indexation auto, clés par domaine et déploiement Vercel.',
@@ -495,6 +495,42 @@ export const languages = [
 export const otherPortfolios = [
   { label: 'dariohd', href: hubLinks.portfolioDariohd, desc: 'Portfolio interactif' },
 ];
+
+const projectById = new Map(projects.map((p) => [p.id, p]));
+
+/** Projets retenus pour le CV — hors Domaine de Roche, focus full-stack / prod. */
+export const cvProjectSections = [
+  {
+    title: 'Applications & outils',
+    ids: ['sqcdp', 'bulle', 'rlreplay'],
+  },
+  {
+    title: 'Sites web en production',
+    ids: ['etcbc', 'maison-ela', 'quai-des-reves'],
+  },
+  {
+    title: 'Produit commercial',
+    ids: ['bullweb'],
+  },
+  {
+    title: 'Jeux web & logiciels',
+    ids: ['pokerift', 'pokedex'],
+  },
+];
+
+export function cvProjectLine(id) {
+  const p = projectById.get(id);
+  if (!p) return '';
+  const stack = (p.stack || []).slice(0, 6).join(', ');
+  const detail = p.outcome || p.role || p.description;
+  return stack ? `${stack} · ${detail}` : detail;
+}
+
+export function cvProjectUrl(id) {
+  const p = projectById.get(id);
+  if (!p?.url || /github\.com/i.test(p.url)) return p?.repo || '';
+  return p.url;
+}
 
 const liveProjects = projects.filter(
   (p) =>

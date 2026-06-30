@@ -81,6 +81,14 @@
       margin: 1.5rem 0 0.75rem;
       font-family: 'IBM Plex Mono', monospace;
     }
+    h3 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 1.1rem 0 0.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+    }
     p, li { font-size: 0.95rem; color: var(--muted); }
     ul { padding-left: 1.2rem; }
     li { margin-bottom: 0.35rem; }
@@ -95,9 +103,10 @@
     .cv__entry-head strong { color: var(--text); }
     .cv__entry-head span { font-size: 0.85rem; }
     .cv__entry-role { font-weight: 600; color: var(--text); font-size: 0.92rem; margin-bottom: 0.35rem; }
-    .cv__project { margin-bottom: 1rem; }
+    .cv__project { margin-bottom: 0.85rem; }
     .cv__project strong { color: var(--text); display: block; margin-bottom: 0.15rem; }
     .cv__project span { font-size: 0.88rem; }
+    .cv__project a { color: var(--accent); font-size: 0.82rem; text-decoration: none; word-break: break-all; }
     @media print {
       body { background: #fff; padding: 0; }
       .cv { box-shadow: none; border: none; border-radius: 0; max-width: none; }
@@ -118,7 +127,6 @@
   <script type="module">
     import {
       profile,
-      about,
       projects,
       experience,
       education,
@@ -126,17 +134,12 @@
       languages,
       stackGroups,
       site,
-      metaProjectIds,
+      cvProjectSections,
+      cvProjectLine,
+      cvProjectUrl,
     } from './config.js';
 
-    const live = projects.filter(
-      (p) =>
-        p.url &&
-        !p.local &&
-        !metaProjectIds.has(p.id) &&
-        !/github\.com/i.test(p.url),
-    );
-    const featured = projects.filter((p) => p.featured);
+    const projectById = new Map(projects.map((p) => [p.id, p]));
     const skills = [...new Set(stackGroups.flatMap((g) => g.items))];
 
     const pdfHref = profile.cv || '';
@@ -148,6 +151,25 @@
       : `<div class="cv__actions">
           <button type="button" class="cv__btn cv__btn--primary" onclick="window.print()">Enregistrer en PDF</button>
         </div>`;
+
+    const projectSections = cvProjectSections
+      .map((section) => {
+        const items = section.ids
+          .map((id) => {
+            const p = projectById.get(id);
+            if (!p) return '';
+            const url = cvProjectUrl(id);
+            return `
+          <div class="cv__project">
+            <strong>${p.name}</strong>
+            <span>${cvProjectLine(id)}</span>
+            ${url ? `<br><a href="${url}">${url}</a>` : ''}
+          </div>`;
+          })
+          .join('');
+        return `<h3>${section.title}</h3>${items}`;
+      })
+      .join('');
 
     document.getElementById('cv-root').innerHTML = `
       ${actions}
@@ -221,24 +243,8 @@
       </section>
 
       <section>
-        <h2>Projets mis en avant</h2>
-        ${featured
-          .map(
-            (p) => `
-          <div class="cv__project">
-            <strong>${p.name}</strong>
-            <span>${p.description}</span>
-            ${p.url && !p.local ? `<br><span>${p.url}</span>` : ''}
-          </div>`,
-          )
-          .join('')}
-      </section>
-
-      <section>
-        <h2>Réalisations en ligne</h2>
-        <ul>
-          ${live.map((p) => `<li><strong style="color:var(--text)">${p.name}</strong> — ${p.url}</li>`).join('')}
-        </ul>
+        <h2>Projets</h2>
+        ${projectSections}
       </section>
     `;
 
