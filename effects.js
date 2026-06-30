@@ -312,15 +312,48 @@ function initScrollProgress() {
   const railBar = document.getElementById('rail-progress');
   if (!bar && !railBar) return;
 
+  let ticking = false;
   const update = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const p = max > 0 ? window.scrollY / max : 0;
     if (bar) bar.style.transform = `scaleX(${p})`;
     if (railBar) railBar.style.transform = `scaleY(${p})`;
+    ticking = false;
   };
 
-  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
   update();
+}
+
+/** Un seul listener pour le spotlight cartes (léger vs N× pointermove). */
+function initLiteSpotlight() {
+  if (!isFinePointer || prefersReduced) return;
+
+  document.addEventListener(
+    'pointermove',
+    (e) => {
+      const el = e.target.closest('.project-card, .expertise-card, .cta, .link-card');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    },
+    { passive: true },
+  );
+}
+
+function initFxReady() {
+  if (prefersReduced) return;
+  document.body.classList.add('fx-ready');
 }
 
 function initSpotlight() {
@@ -342,7 +375,7 @@ function initSpotlight() {
 }
 
 export function reinitSpotlight() {
-  initSpotlight();
+  /* spotlight délégué global — rien à réinitialiser par carte */
 }
 
 function initMagnetic() {
@@ -427,5 +460,7 @@ export function initEffects() {
     setupProjectCardScrollAnimations();
     initBoingHover();
     initRailNavGlow();
+    initLiteSpotlight();
+    initFxReady();
   });
 }
