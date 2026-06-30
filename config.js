@@ -301,9 +301,9 @@ export const projects = [
   {
     id: 'bulle',
     category: 'entreprise',
-    name: 'Bulle',
+    name: 'Bulle ChatBot',
     description:
-      'Widget IA embarquable pour sites vitrines : chat contextuel, clés par domaine, démo intégrée et déploiement Vercel.',
+      'Widget IA embarquable pour sites vitrines : assistant contextuel, indexation auto, clés par domaine et déploiement Vercel.',
     role: 'Next.js, AI SDK, widget embeddable',
     outcome: 'Produit en ligne sur bulle-chatbot.vercel.app',
     imageLocal: 'assets/projects/bulle.jpg',
