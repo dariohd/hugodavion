@@ -489,7 +489,7 @@ export const softSkills = [
 
 export const languages = [
   { name: 'Français', level: 'Langue maternelle' },
-  { name: 'Anglais', level: 'C1 professionnel' },
+  { name: 'Anglais', level: 'C1 professionnel · TOEIC' },
 ];
 
 export const otherPortfolios = [
