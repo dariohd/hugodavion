@@ -1,4 +1,8 @@
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersLite =
+  prefersReduced ||
+  !window.matchMedia('(pointer: fine)').matches ||
+  window.matchMedia('(max-width: 1024px)').matches;
 
 const COLORS = {
   grid: 'rgba(123, 156, 255, 0.16)',
@@ -25,12 +29,12 @@ export function initTechBg() {
   const glow = document.getElementById('tech-glow');
   if (!canvas) return;
 
-  if (prefersReduced) {
+  if (prefersReduced || prefersLite) {
     canvas.remove();
     return;
   }
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: true });
   let w = 0;
   let h = 0;
   let dpr = 1;
@@ -58,9 +62,9 @@ export function initTechBg() {
 
   function buildGraph() {
     nodes = [];
-    const cell = Math.max(110, Math.min(140, w / 9));
-    const cols = Math.min(Math.ceil(w / cell) + 1, 11);
-    const rows = Math.min(Math.ceil(h / cell) + 1, 7);
+    const cell = Math.max(120, Math.min(150, w / 8));
+    const cols = Math.min(Math.ceil(w / cell) + 1, 8);
+    const rows = Math.min(Math.ceil(h / cell) + 1, 5);
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -89,7 +93,7 @@ export function initTechBg() {
       }
     }
 
-    packets = Array.from({ length: Math.min(12, edges.length) }, (_, i) => ({
+    packets = Array.from({ length: Math.min(6, edges.length) }, (_, i) => ({
       edge: i % edges.length,
       t: Math.random(),
       speed: 0.00028 + Math.random() * 0.00035,
@@ -107,8 +111,8 @@ export function initTechBg() {
   function drawPerspectiveGrid() {
     const { x: vx, y: vy } = vanishingPoint();
     const depth = 0.65 + scrollP * 0.3;
-    const rows = 12;
-    const rays = 16;
+    const rows = 7;
+    const rays = 9;
 
     ctx.strokeStyle = COLORS.grid;
     ctx.lineWidth = 1;
@@ -250,17 +254,21 @@ export function initTechBg() {
     glow.style.opacity = pointer.active ? '0.9' : '0.55';
   }
 
+  let lastFrame = 0;
+  const frameInterval = 1000 / 30;
+
   function frame(ts) {
     rafId = requestAnimationFrame(frame);
     if (!visible || w < 2 || h < 2) return;
+    if (ts - lastFrame < frameInterval) return;
+    lastFrame = ts;
 
     time = ts;
     frameN += 1;
     ctx.clearRect(0, 0, w, h);
     drawPerspectiveGrid();
     drawNetwork();
-    if (frameN % 2 === 0) drawAxes();
-    if (frameN % 3 === 0) updateGlow();
+    if (frameN % 4 === 0) updateGlow();
   }
 
   const onResize = () => resize();
@@ -278,8 +286,21 @@ export function initTechBg() {
     pointer.active = true;
   };
   const onVis = () => {
-    visible = !document.hidden;
+    visible = !document.hidden && heroVisible;
   };
+
+  let heroVisible = true;
+  const hero = document.querySelector('.hero');
+  const heroObserver =
+    hero &&
+    new IntersectionObserver(
+      ([entry]) => {
+        heroVisible = entry.isIntersecting;
+        visible = !document.hidden && heroVisible;
+      },
+      { rootMargin: '120px 0px' },
+    );
+  heroObserver?.observe(hero);
 
   window.addEventListener('resize', onResize, { passive: true });
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -295,6 +316,7 @@ export function initTechBg() {
 
   activeCleanup = () => {
     cancelAnimationFrame(rafId);
+    heroObserver?.disconnect();
     window.removeEventListener('resize', onResize);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('pointermove', onPointer);

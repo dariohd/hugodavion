@@ -295,13 +295,12 @@ button:focus-visible,
   padding: 0.5rem 1rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(123, 156, 255, 0.35);
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.92);
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   cursor: pointer;
-  backdrop-filter: blur(8px);
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
@@ -357,8 +356,13 @@ a { color: inherit; }
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  background-image: radial-gradient(rgba(123, 156, 255, 0.35) 0.6px, transparent 0.6px);
+  background-size: 4px 4px;
+}
+
+#cursor {
+  display: none !important;
 }
 
 .tech-bg {
@@ -454,8 +458,7 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   align-items: center;
   padding: 1.5rem 0;
   border-right: 1px solid rgba(140, 165, 220, 0.4);
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(20px) saturate(1.15);
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 4px 0 32px rgba(140, 170, 230, 0.14);
 }
 
@@ -716,7 +719,7 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
 
 .hero__manifest {
   border: 1px solid rgba(123, 156, 255, 0.18);
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.88);
   border-radius: var(--radius-lg);
   padding: 1rem 1.25rem;
   margin-bottom: 1.75rem;
@@ -724,7 +727,6 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   flex-direction: column;
   gap: 0.45rem;
   box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px) saturate(1.1);
   position: relative;
 }
 
@@ -832,8 +834,7 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
 /* Sections */
 .section { padding: 7rem 0; }
 .section--alt {
-  background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.42);
   position: relative;
 }
 
@@ -1073,7 +1074,6 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-fluffy);
-  backdrop-filter: blur(14px) saturate(1.08);
   transition: box-shadow 0.35s var(--ease-boing), border-color 0.35s;
   transform-style: preserve-3d;
   --mx: 50%;
@@ -1212,10 +1212,8 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-fluffy);
-  backdrop-filter: blur(14px) saturate(1.08);
   transition: box-shadow 0.35s var(--ease-boing), border-color 0.35s;
   transform-style: preserve-3d;
-  will-change: transform;
   --mx: 50%;
   --my: 50%;
 }
@@ -1419,7 +1417,6 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   border: 1px solid rgba(255, 255, 255, 0.92);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-fluffy);
-  backdrop-filter: blur(14px) saturate(1.06);
   transition: border-color 0.35s, box-shadow 0.35s;
 }
 
@@ -1495,7 +1492,6 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   border-radius: var(--radius-lg);
   text-decoration: none;
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(12px) saturate(1.06);
   position: relative;
   overflow: hidden;
   transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s var(--ease-boing);
@@ -1542,7 +1538,6 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-fluffy);
-  backdrop-filter: blur(16px) saturate(1.1);
   --mx: 50%;
   --my: 50%;
   transition: box-shadow 0.4s var(--ease-boing);
@@ -1691,8 +1686,7 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
     margin: 0;
     padding: 0;
     border: 0;
-    background: rgba(74, 90, 138, 0.28);
-    backdrop-filter: blur(3px);
+    background: rgba(74, 90, 138, 0.35);
     cursor: pointer;
   }
 
@@ -1743,9 +1737,8 @@ main, .rail, .page-wrap, .footer, .skill-wall-wrap { position: relative; z-index
     height: var(--header-h);
     padding: 0 var(--gutter);
     z-index: 260;
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(16px);
     box-shadow: var(--shadow-soft);
   }
 

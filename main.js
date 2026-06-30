@@ -282,6 +282,20 @@ function initMarquee() {
       }
     });
   });
+
+  const setMarqueeState = (running) => {
+    const state = running ? 'running' : 'paused';
+    wrap.querySelectorAll('.skill-wall__track').forEach((track) => {
+      track.style.animationPlayState = state;
+    });
+  };
+
+  const marqueeObserver = new IntersectionObserver(
+    ([entry]) => setMarqueeState(entry.isIntersecting),
+    { rootMargin: '80px 0px' },
+  );
+  marqueeObserver.observe(wrap);
+  setMarqueeState(false);
 }
 
 function parseBold(text) {

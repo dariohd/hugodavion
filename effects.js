@@ -57,8 +57,6 @@ export function refreshScrollAnimations() {
 
 export function refreshProjectCards(grid) {
   clearProjectScrollTriggers();
-  reinitSpotlight();
-  reinitCardTilt();
   if (prefersReduced || !grid) return;
   animateProjectFilter(grid);
 }
@@ -126,7 +124,7 @@ function setupScrollAnimations() {
       scrollTrigger: {
         trigger: head,
         start: 'top 82%',
-        toggleActions: 'play none none reverse',
+        once: true,
       },
       y: 28,
       opacity: 0,
@@ -140,7 +138,7 @@ function setupScrollAnimations() {
 
   gsap.utils.toArray('.expertise-card').forEach((card, i) => {
     const tween = gsap.from(card, {
-      scrollTrigger: { trigger: card, start: 'top 88%' },
+      scrollTrigger: { trigger: card, start: 'top 88%', once: true },
       y: 40,
       opacity: 0,
       scale: 0.94,
@@ -154,7 +152,7 @@ function setupScrollAnimations() {
   gsap.utils.toArray('.tech-group').forEach((group) => {
     const pills = group.querySelectorAll('.tech-pill');
     const tween = gsap.from(pills, {
-      scrollTrigger: { trigger: group, start: 'top 88%' },
+      scrollTrigger: { trigger: group, start: 'top 88%', once: true },
       y: 12,
       opacity: 0,
       scale: 0.9,
@@ -165,33 +163,34 @@ function setupScrollAnimations() {
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
   });
 
-  gsap.utils.toArray('.about__portrait').forEach((el) => {
-    const tween = gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 80%' },
+  const aboutText = document.querySelector('.about__text');
+  if (aboutText) {
+    const tween = gsap.from(aboutText.querySelectorAll('p'), {
+      scrollTrigger: { trigger: aboutText, start: 'top 88%', once: true },
+      x: -18,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.9,
+      ease: SMOOTH,
+    });
+    if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
+  }
+
+  const portrait = document.querySelector('.about__portrait');
+  if (portrait) {
+    const tween = gsap.from(portrait, {
+      scrollTrigger: { trigger: portrait, start: 'top 80%', once: true },
       scale: 0.92,
       opacity: 0,
       duration: 1.1,
       ease: SMOOTH,
     });
     if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
-  });
-
-  gsap.utils.toArray('.about__text p').forEach((p, i) => {
-    const tween = gsap.from(p, {
-      scrollTrigger: { trigger: p, start: 'top 90%' },
-      x: -18,
-      opacity: 0,
-      scale: 0.97,
-      duration: 0.9,
-      delay: i * 0.12,
-      ease: SMOOTH,
-    });
-    if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
-  });
+  }
 
   gsap.utils.toArray('.link-card, .cta').forEach((el) => {
     const tween = gsap.from(el, {
-      scrollTrigger: { trigger: el, start: 'top 88%' },
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
       y: 28,
       opacity: 0,
       scale: 0.94,
@@ -205,22 +204,19 @@ function setupScrollAnimations() {
 function setupProjectCardScrollAnimations(root = document) {
   if (prefersReduced) return;
 
-  const cards = root.querySelectorAll
-    ? root.querySelectorAll('.project-card')
-    : document.querySelectorAll('.project-card');
+  const grid = root.querySelector?.('#projects-grid') || document.getElementById('projects-grid');
+  if (!grid || !grid.children.length) return;
 
-  cards.forEach((card, i) => {
-    const tween = gsap.from(card, {
-      scrollTrigger: { trigger: card, start: 'top 90%' },
-      y: 48,
-      opacity: 0,
-      scale: 0.94,
-      duration: 1.05,
-      delay: (i % 3) * 0.08,
-      ease: SMOOTH,
-    });
-    if (tween.scrollTrigger) projectScrollTriggers.push(tween.scrollTrigger);
+  const tween = gsap.from(grid.children, {
+    scrollTrigger: { trigger: grid, start: 'top 88%', once: true },
+    y: 40,
+    opacity: 0,
+    scale: 0.96,
+    stagger: 0.06,
+    duration: 0.9,
+    ease: SMOOTH,
   });
+  if (tween.scrollTrigger) projectScrollTriggers.push(tween.scrollTrigger);
 }
 
 function initCursor() {
@@ -286,7 +282,7 @@ function initCursor() {
 function initBoingHover() {
   if (prefersReduced) return;
 
-  const sel = '.btn, .filter-btn, .skill-chip, .link-card, .rail__cta';
+  const sel = '.btn, .filter-btn, .link-card, .rail__cta';
 
   document.querySelectorAll(sel).forEach((el) => {
     if (el.dataset.boing) return;
@@ -374,21 +370,7 @@ function initCardTilt() {
 }
 
 function initSectionParallax() {
-  if (prefersReduced) return;
-
-  gsap.utils.toArray('.section-watermark').forEach((wm) => {
-    const tween = gsap.to(wm, {
-      y: 48,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: wm.closest('.section') || wm,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.2,
-      },
-    });
-    if (tween.scrollTrigger) scrollTriggers.push(tween.scrollTrigger);
-  });
+  /* désactivé — scrub ScrollTrigger coûteux au scroll */
 }
 
 function initRailNavGlow() {
@@ -414,20 +396,16 @@ export function reinitCardTilt() {
 export function animateProjectFilter(grid) {
   if (prefersReduced) return;
   gsap.from(grid.children, {
-    y: 32,
+    y: 24,
     opacity: 0,
-    scale: 0.92,
-    stagger: 0.08,
-    duration: 0.95,
+    stagger: 0.05,
+    duration: 0.65,
     ease: SMOOTH,
   });
 }
 
 export function initEffects() {
-  initCursor();
   initScrollProgress();
-  initSpotlight();
-  initBoingHover();
 
   if (prefersReduced) {
     document.getElementById('intro')?.remove();
@@ -437,13 +415,8 @@ export function initEffects() {
     gsap.set('.tech-bg', { opacity: 1 });
     setupScrollAnimations();
     setupProjectCardScrollAnimations();
-    initSectionParallax();
-    initCardTilt();
     initBoingHover();
     initRailNavGlow();
-    window.__reinitTilt = reinitCardTilt;
-    window.__reinitSpotlight = reinitSpotlight;
-    window.__reinitBoing = reinitBoing;
     return;
   }
 
@@ -452,12 +425,7 @@ export function initEffects() {
     animateHero(skipped);
     setupScrollAnimations();
     setupProjectCardScrollAnimations();
-    initSectionParallax();
-    initCardTilt();
     initBoingHover();
     initRailNavGlow();
-    window.__reinitTilt = reinitCardTilt;
-    window.__reinitSpotlight = reinitSpotlight;
-    window.__reinitBoing = reinitBoing;
   });
 }
