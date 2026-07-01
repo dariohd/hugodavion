@@ -1,5 +1,5 @@
-import gsap from './vendor/gsap/index.js';
-import { ScrollTrigger } from './vendor/gsap/ScrollTrigger.js';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initTechBg } from './tech-bg.js';
 import { runIntroCinematic } from './intro-cinematic.js';
 
