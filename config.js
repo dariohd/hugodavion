@@ -221,10 +221,10 @@ export const projects = [
     description:
       'Forum web full-stack : threads, réponses, upload fichiers (Vercel Blob), API serverless et base Neon PostgreSQL.',
     role: 'Full-stack React · API · base de données',
-    outcome: 'En ligne sur mur-libre.vercel.app',
+    outcome: 'En ligne sur forum-libre.vercel.app',
     imageLocal: 'assets/projects/forum.svg',
     stack: ['React', 'TypeScript', 'Vite', 'Neon', 'PostgreSQL', 'Vercel Blob', 'API REST'],
-    url: 'https://mur-libre.vercel.app/',
+    url: 'https://forum-libre.vercel.app/',
     repo: 'https://github.com/dariohd/Forum',
   },
   /* ——— Outils ——— */
@@ -239,7 +239,7 @@ export const projects = [
     outcome: 'Outil métier en production (migration depuis Google Apps Script)',
     imageLocal: 'assets/projects/planning.svg',
     stack: ['Next.js', 'React', 'Prisma', 'Neon', 'Auth.js', 'Tailwind CSS', 'Playwright'],
-    url: 'https://planning-presence-atelier.vercel.app/',
+    url: 'https://planning-tristan.vercel.app/',
     repo: 'https://github.com/dariohd/Planning',
   },
   {
@@ -319,10 +319,10 @@ export const projects = [
     description:
       'Widget IA embarquable pour sites vitrines : assistant contextuel, indexation auto, clés par domaine et déploiement Vercel.',
     role: 'Next.js, AI SDK, widget embeddable',
-    outcome: 'Produit en ligne sur bulle-chatbot.vercel.app',
+    outcome: 'Produit en ligne sur bullechatbot.vercel.app',
     imageLocal: 'assets/projects/bulle.jpg',
     stack: ['Next.js', 'React', 'AI SDK', 'Tailwind CSS', 'Widget', 'Vercel'],
-    url: 'https://bulle-chatbot.vercel.app/',
+    url: 'https://bullechatbot.vercel.app/',
     repo: 'https://github.com/dariohd/BulleChatBot',
   },
   /* ——— Jeux ——— */
@@ -346,7 +346,7 @@ export const projects = [
     outcome: 'Jeu jouable en ligne sur Vercel',
     imageLocal: 'assets/projects/pokerift.jpg',
     stack: ['Phaser 3', 'TypeScript', 'Vite', 'PokéAPI', '2.5D'],
-    url: 'https://pokearena-topaz.vercel.app/',
+    url: 'https://arena-poke.vercel.app/',
   },
   {
     id: 'pokedex',
@@ -358,7 +358,7 @@ export const projects = [
     outcome: 'Double interface MVVM + React 19',
     imageLocal: 'assets/projects/pokedex.svg',
     stack: ['.NET 10', 'WPF', 'MVVM', 'React 19', 'Vite', 'Tailwind CSS', 'TypeScript'],
-    url: 'https://pokedex-dariohprojects.vercel.app',
+    url: 'https://dex-explorer.vercel.app',
     repo: 'https://github.com/dariohd/Pokedex',
   },
   {

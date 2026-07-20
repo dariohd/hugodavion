@@ -20,7 +20,7 @@ const captures = [
   { file: 'sqcdp.jpg', url: 'https://sqcdp.vercel.app/' },
   { file: 'pokerift.jpg', url: 'https://poke-rift.vercel.app/' },
   { file: 'pokemon-rumble.jpg', url: 'https://pokemonrumbleweb.vercel.app/' },
-  { file: 'bulle.jpg', url: 'https://bulle-chatbot.vercel.app/' },
+  { file: 'bulle.jpg', url: 'https://bullechatbot.vercel.app/' },
   { file: 'bullweb.jpg', url: 'https://www.bulletonsite.com/' },
   { file: 'portfolio-site.jpg', url: 'https://hugodavion.vercel.app/', skipIntro: true, wait: 3500 },
   { file: 'portfolio-dariohd.jpg', url: 'https://dariohd.vercel.app/', wait: 3500 },
