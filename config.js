@@ -239,7 +239,7 @@ export const projects = [
     outcome: 'Outil métier en production (migration depuis Google Apps Script)',
     imageLocal: 'assets/projects/planning.svg',
     stack: ['Next.js', 'React', 'Prisma', 'Neon', 'Auth.js', 'Tailwind CSS', 'Playwright'],
-    url: 'https://planning-black-xi.vercel.app/',
+    url: 'https://planning-presence-atelier.vercel.app/',
     repo: 'https://github.com/dariohd/Planning',
   },
   {
