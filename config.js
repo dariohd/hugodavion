@@ -358,7 +358,7 @@ export const projects = [
     outcome: 'Double interface MVVM + React 19',
     imageLocal: 'assets/projects/pokedex.svg',
     stack: ['.NET 10', 'WPF', 'MVVM', 'React 19', 'Vite', 'Tailwind CSS', 'TypeScript'],
-    url: 'https://github.com/dariohd/Pokedex',
+    url: 'https://pokedex-dariohprojects.vercel.app',
     repo: 'https://github.com/dariohd/Pokedex',
   },
   {
