@@ -204,13 +204,13 @@ export const projects = [
     category: 'sites',
     name: 'Domaine de Roche',
     description:
-      'Château et gîtes en Charente-Maritime : site Next.js multilingue, réservation, animations Framer Motion et SEO.',
-    role: 'Développement Next.js · client tourisme premium',
-    outcome: 'Site en production sur domainederoche.vercel.app',
+      'Template Next.js (démo Bulle) pour gîtes & château : i18n, Framer Motion, SEO. Placeholders volontaires, pas un site client.',
+    role: 'Template vitrine tourisme · Next.js',
+    outcome: 'Démo publique · catalogue template Bulle ton site',
     image: 'https://l.icdbcdn.com/oh/509ecfea-facf-4d85-924d-7e36b8343ddf.jpg',
     imageLocal: 'assets/projects/domainederoche.jpg',
     imagePosition: 'center 30%',
-    stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n', 'SEO'],
+    stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'i18n', 'Template'],
     url: 'https://domainederoche.vercel.app/',
     repo: 'https://github.com/dariohd/DomaineDeRoche',
   },
@@ -221,13 +221,27 @@ export const projects = [
     description:
       'Forum web full-stack : threads, réponses, upload fichiers (Vercel Blob), API serverless et base Neon PostgreSQL.',
     role: 'Full-stack React · API · base de données',
-    outcome: 'Application complète · déploiement Vercel à venir',
+    outcome: 'En ligne sur mur-libre.vercel.app',
     imageLocal: 'assets/projects/forum.svg',
     stack: ['React', 'TypeScript', 'Vite', 'Neon', 'PostgreSQL', 'Vercel Blob', 'API REST'],
-    localUrl: '../../Sites/Forum/dist/',
-    demoNote: 'Démo locale (build Vite) · déploiement à venir',
+    url: 'https://mur-libre.vercel.app/',
+    repo: 'https://github.com/dariohd/Forum',
   },
   /* ——— Outils ——— */
+  {
+    id: 'planning',
+    category: 'outils',
+    featured: true,
+    name: 'Planning',
+    description:
+      'Planning de présence atelier : Next.js, Prisma, Neon, Auth.js, i18n FR/EN/PT, graphiques et tests Playwright.',
+    role: 'Full-stack Next.js · auth · PostgreSQL',
+    outcome: 'Outil métier en production (migration depuis Google Apps Script)',
+    imageLocal: 'assets/projects/planning.svg',
+    stack: ['Next.js', 'React', 'Prisma', 'Neon', 'Auth.js', 'Tailwind CSS', 'Playwright'],
+    url: 'https://planning-black-xi.vercel.app/',
+    repo: 'https://github.com/dariohd/Planning',
+  },
   {
     id: 'rlreplay',
     category: 'outils',
@@ -325,7 +339,6 @@ export const projects = [
   {
     id: 'pokearena',
     category: 'jeux',
-    featured: true,
     name: 'PokeArena',
     description:
       'Combat de figurines 2.5D en navigateur : stats et sprites live PokéAPI, vagues, combos et recrutement.',
@@ -486,11 +499,11 @@ export const otherPortfolios = [
 
 const projectById = new Map(projects.map((p) => [p.id, p]));
 
-/** Projets retenus pour le CV — hors Domaine de Roche, focus full-stack / prod. */
+/** Projets retenus pour le CV — focus recruteur / école : prod, stack moderne, preuves client. */
 export const cvProjectSections = [
   {
     title: 'Applications & outils',
-    ids: ['sqcdp', 'bulle', 'rlreplay'],
+    ids: ['planning', 'sqcdp', 'bulle', 'rlreplay'],
   },
   {
     title: 'Sites web en production',
@@ -502,7 +515,7 @@ export const cvProjectSections = [
   },
   {
     title: 'Jeux web & logiciels',
-    ids: ['pokerift', 'pokedex'],
+    ids: ['pokearena', 'pokedex'],
   },
 ];
 
