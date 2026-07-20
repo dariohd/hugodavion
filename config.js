@@ -128,7 +128,7 @@ export const expertise = [
     id: 'games',
     title: 'Jeux & game dev',
     description:
-      'Prototypes et jeux : coop horreur UE5 (CarryTheCurse), jeux navigateur (PokeRift, Pokémon Rumble), Pokédex et portfolio interactif dariohd.',
+      'Prototypes et jeux : coop horreur UE5 (CarryTheCurse), PokeArena (2.5D PokéAPI), Pokédex et portfolio interactif dariohd.',
     skills: [
       'Unreal Engine 5',
       'C++',
@@ -323,29 +323,17 @@ export const projects = [
     demoNote: 'Prototype UE5 · éditeur requis',
   },
   {
-    id: 'pokerift',
+    id: 'pokearena',
     category: 'jeux',
     featured: true,
-    name: 'PokeRift',
+    name: 'PokeArena',
     description:
-      'Action RPG navigateur style Rumble World : hub dimensionnel, donjons, vagues, combos et collection en Babylon.js 3D.',
-    role: 'Game dev web · Babylon.js',
+      'Combat de figurines 2.5D en navigateur : stats et sprites live PokéAPI, vagues, combos et recrutement.',
+    role: 'Game dev web · Phaser 3',
     outcome: 'Jeu jouable en ligne sur Vercel',
     imageLocal: 'assets/projects/pokerift.jpg',
-    stack: ['Babylon.js', 'WebGL', 'Vite', 'JavaScript', 'Action RPG'],
-    url: 'https://poke-rift.vercel.app/',
-    repo: 'https://github.com/dariohd/PokeRift',
-  },
-  {
-    id: 'pokemon-rumble-web',
-    category: 'jeux',
-    name: 'Pokémon Rumble',
-    description:
-      'Jeu navigateur top-down Canvas 2D : figurines, arène, vagues, recrutement et améliorations permanentes.',
-    imageLocal: 'assets/projects/pokemon-rumble.jpg',
-    stack: ['Vite', 'Canvas 2D', 'JavaScript'],
-    url: 'https://pokemonrumbleweb.vercel.app/',
-    repo: 'https://github.com/dariohd/PokemonRumbleWeb',
+    stack: ['Phaser 3', 'TypeScript', 'Vite', 'PokéAPI', '2.5D'],
+    url: 'https://pokearena-topaz.vercel.app/',
   },
   {
     id: 'pokedex',
